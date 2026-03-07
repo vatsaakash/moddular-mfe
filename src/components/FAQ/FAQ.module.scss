@@ -72,7 +72,7 @@
   align-items: center;
   justify-content: space-between;
   gap: $space-base;
-  padding: $space-lg;
+  padding: $space-lg $space-lg;
   background: none;
   border: none;
   cursor: pointer;
@@ -87,7 +87,7 @@
   @include smooth-transition(background-color);
 
   @include respond-below(md) {
-    padding: $space-base;
+    padding: $space-base $space-base;
     font-size: $font-size-sm;
   }
 
@@ -129,13 +129,13 @@
 }
 
 .answer {
-  padding: 0 $space-lg $space-lg;
+  padding: $space-base $space-lg;
   color: var(--color-text-secondary);
   font-size: $font-size-sm;
   line-height: $line-height-relaxed;
 
   @include respond-below(md) {
-    padding: 0 $space-base $space-base;
+    padding: $space-sm $space-base;
     font-size: $font-size-xs;
   }
 }

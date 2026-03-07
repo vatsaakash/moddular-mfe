@@ -259,19 +259,23 @@
   &.active {
     background: var(--color-surface);
     color: var(--color-text);
-    box-shadow: $shadow-sm;
+  box-shadow: $shadow-sm;
     font-weight: $font-weight-medium;
   }
 }
 
-.ratingsRow {
+.ratingsRow,
+.profileRow {
   display: flex;
-  gap: $space-xl;
   flex-wrap: wrap;
+  gap: $space-xl;
+  margin-top: $space-lg;
 
-  > div {
+  > div, 
+  > article,
+  > section {
     flex: 1;
-    min-width: 160px;
+    min-width: 300px;
   }
 }
 

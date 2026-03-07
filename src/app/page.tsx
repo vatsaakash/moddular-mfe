@@ -5,6 +5,7 @@ import { useTheme } from '@/providers/ThemeProvider';
 import { FAQ } from '@/components/FAQ';
 import { Accordion } from '@/components/Accordion';
 import { Ratings } from '@/components/Ratings';
+import { ProfileCard } from '@/components/ProfileCard';
 import styles from './page.module.scss';
 
 const faqItems = [
@@ -61,6 +62,7 @@ export default function Home() {
   const [faqTheme, setFaqTheme] = useState<LocalTheme>('inherit');
   const [accordionTheme, setAccordionTheme] = useState<LocalTheme>('inherit');
   const [ratingsTheme, setRatingsTheme] = useState<LocalTheme>('inherit');
+  const [profileTheme, setProfileTheme] = useState<LocalTheme>('inherit');
 
   const LocalThemeToggle = ({ value, onChange }: { value: LocalTheme, onChange: (val: LocalTheme) => void }) => (
     <div className={styles.localThemeToggle}>
@@ -120,9 +122,8 @@ export default function Home() {
               <button
                 key={t}
                 onClick={() => setTheme(t)}
-                className={`${styles.themeBtn} ${
-                  theme === t ? styles.active : ''
-                }`}
+                className={`${styles.themeBtn} ${theme === t ? styles.active : ''
+                  }`}
                 aria-pressed={theme === t}
               >
                 {t === 'light' && '☀️'}
@@ -192,11 +193,11 @@ export default function Home() {
             <div className={styles.ratingsRow}>
               <div>
                 <p className={styles.demoVariant}>Star (interactive)</p>
-                <Ratings 
-                  max={5} 
-                  defaultValue={3} 
-                  showLabel 
-                  size="lg" 
+                <Ratings
+                  max={5}
+                  defaultValue={3}
+                  showLabel
+                  size="lg"
                   theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
                 />
               </div>
@@ -214,15 +215,48 @@ export default function Home() {
               </div>
               <div>
                 <p className={styles.demoVariant}>Circle (small)</p>
-                <Ratings 
-                  max={5} 
-                  defaultValue={2} 
-                  icon="circle" 
-                  showLabel 
-                  size="sm" 
+                <Ratings
+                  max={5}
+                  defaultValue={2}
+                  icon="circle"
+                  showLabel
+                  size="sm"
                   theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
                 />
               </div>
+            </div>
+          </div>
+
+          {/* ProfileCard Demo */}
+          <div className={styles.demoBlock}>
+            <div className={styles.demoHeader}>
+              <div>
+                <h3 className={styles.demoTitle}>ProfileCard</h3>
+                <p className={styles.demoVariant}>Social Media Integration</p>
+              </div>
+              <LocalThemeToggle value={profileTheme} onChange={setProfileTheme} />
+            </div>
+            <div className={styles.profileRow}>
+              <ProfileCard
+                // name="Akash Vatsa"
+                // bio="Entrepreneur @ ICW Technologies. Building Moddular MFE."
+                // image="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop"
+                variant="full"
+                isVerified
+                // stats={{ followers: '1k+', posts: 24, following: 400 }}
+                profileUrl="https://github.com/vatsaakash"
+              // theme={profileTheme === 'inherit' ? undefined : profileTheme}
+              />
+              <ProfileCard
+                name="Akash Vatsa"
+                bio="Full Stack Developer focused on React & Web Performance. Founder of ICW Technologies."
+                image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop"
+                variant="split"
+                isVerified
+                stats={{ followers: '2k+', posts: 56, following: 500 }}
+                profileUrl="https://www.linkedin.com/in/vatsaakash/"
+                theme={profileTheme === 'inherit' ? undefined : profileTheme}
+              />
             </div>
           </div>
         </div>
@@ -264,7 +298,7 @@ export default function Home() {
               <div className={styles.stepInfo}>
                 <h4>Import & Use</h4>
                 <p>
-                  Drop any component into your UI and customize via props. 
+                  Drop any component into your UI and customize via props.
                   View the <a href="storybook/" target="_blank" rel="noopener noreferrer"><strong>Storybook code</strong></a> for live snippets.
                 </p>
                 <div className={styles.codeBox}>
@@ -281,7 +315,7 @@ export default function Home() {
         <div className={styles.storybookCard}>
           <h3>Interactive Storybook</h3>
           <p>
-            Every component is fully documented in our interactive Storybook. 
+            Every component is fully documented in our interactive Storybook.
             Tweak props, test accessibility, and explore all variations live.
           </p>
           <a href="storybook/" className={styles.btnPrimary} target="_blank" rel="noopener noreferrer">

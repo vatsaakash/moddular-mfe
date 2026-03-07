@@ -1,0 +1,344 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@mixin pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+
+.profileCard {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  font-family: $font-family-base;
+  background-color: var(--color-bg);
+  box-shadow: $shadow-lg;
+  border: 1px solid var(--color-border);
+  @include smooth-transition(transform, box-shadow);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl;
+  }
+
+  &.isLoading {
+    pointer-events: none;
+
+    .avatar,
+    .background,
+    .name,
+    .username,
+    .bio,
+    .statValue,
+    .statLabel {
+      @include pulse;
+      background: var(--color-surface-raised);
+      color: transparent !important;
+      border-radius: $radius-sm;
+    }
+
+    .avatar {
+      border-radius: 50%;
+    }
+  }
+}
+
+// ── Variant: Split ───────────────────────────────────────────
+.split {
+  .header {
+    width: 100%;
+    aspect-ratio: 1.15 / 1;
+    overflow: hidden;
+    background-color: var(--color-border);
+    padding: $space-xs;
+    border-radius: 1.75rem 1.75rem 0 0;
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 1.5rem 1.5rem 0 0;
+    }
+  }
+
+  .content {
+    padding: $space-lg;
+  }
+}
+
+// ── Variant: Full ────────────────────────────────────────────
+.full {
+  aspect-ratio: 0.7 / 1;
+  background-color: #000;
+  border: 4px solid #000000; // Outer frame
+
+  .fullBg {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    .background {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0.1) 40%,
+          rgba(0, 0, 0, 0.4) 70%,
+          rgba(0, 0, 0, 0.9) 100%);
+    }
+  }
+
+  .header {
+    display: none;
+  }
+
+  .content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: $space-lg;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+
+    [data-component-theme='light'] & {
+      color: #1a1a1a;
+      background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.8));
+    }
+  }
+
+  .titleSection {
+    margin-bottom: 0;
+  }
+
+  .nameRow {
+    .name {
+      color: #ffffff;
+      font-size: 1.5rem;
+    }
+  }
+
+  .verifiedIcon {
+    background: #e5e7eb;
+    color: #000000;
+    padding: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bio {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-size: $font-size-base;
+    line-height: 1.4;
+  }
+
+  .statsBar {
+    margin-bottom: 0;
+    align-items: center;
+    gap: $space-lg;
+  }
+
+  .statItem {
+    flex-direction: row;
+    align-items: center;
+    gap: $space-xs;
+    color: #ffffff;
+
+    .statValue {
+      color: #ffffff;
+      font-size: $font-size-base;
+    }
+
+    .statLabel {
+      display: none; // Using icons from ڈیزائن
+    }
+  }
+
+  .followBtn {
+    background: #e5e7eb;
+    color: #000000;
+    border-radius: 2rem;
+    padding: $space-sm $space-xl;
+    width: auto;
+    flex: 0;
+  }
+}
+
+// ── Platforms ───────────────────────────────────────────────
+.instagram {
+  &.full .overlay {
+    background: linear-gradient(135deg,
+        rgba(131, 58, 180, 0.3) 0%,
+        rgba(253, 29, 29, 0.3) 50%,
+        rgba(252, 176, 69, 0.3) 100%), linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+  }
+}
+
+// ── Components ──────────────────────────────────────────────
+.titleSection {
+  margin-bottom: $space-md;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+
+  .name {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: var(--color-text);
+    line-height: $line-height-tight;
+  }
+}
+
+.verifiedIcon {
+  width: 20px;
+  height: 20px;
+  color: #22c55e; // Design Green
+  background: white;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  [data-component-theme='dark'] & {
+    background: transparent; // If using a solid svg
+  }
+}
+
+.username {
+  display: block;
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+  opacity: 0.8;
+  background-color: var(--color-surface);
+  padding: $space-xs $space-sm;
+  border-radius: $radius-md;
+  width: fit-content;
+}
+
+.bio {
+  margin: 0 0 $space-lg 0;
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  @include truncate(6);
+  backdrop-filter: blur(6px);
+  background: rgba(var(--color-surface-rgb), 0.5);
+  padding: $space-xs $space-sm;
+  border-radius: $radius-md;
+}
+
+.statsBar {
+  display: flex;
+  gap: $space-xl;
+  margin-bottom: $space-lg;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+
+  .statValue {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-base;
+    color: var(--color-text);
+  }
+
+  .statIcon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-text-muted);
+
+    .full & {
+      color: #ffffff;
+      opacity: 0.8;
+    }
+  }
+
+  .statLabel {
+    font-size: $font-size-xs;
+    color: var(--color-text-muted);
+    text-transform: capitalize;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-md;
+}
+
+.followBtn {
+  flex: 1;
+  padding: $space-sm $space-lg;
+  border-radius: $radius-full;
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+  border: none;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  @include smooth-transition;
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+    transform: scale(1.02);
+  }
+
+  .full & {
+    background-color: #ffffff;
+    color: #000000;
+  }
+}
+
+.platformBadge {
+  width: 36px;
+  height: 36px;
+  @include flex-center;
+  border-radius: $radius-base;
+  background-color: var(--color-surface-raised);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .full & {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+}

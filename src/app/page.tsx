@@ -94,7 +94,7 @@ export default function Home() {
               Explore Components
             </a>
             <a
-              href="https://github.com/your-username/moddular-mfe"
+              href="https://github.com/vatsaakash/moddular-mfe"
               className={styles.btnSecondary}
               target="_blank"
               rel="noopener noreferrer"
@@ -233,7 +233,7 @@ export default function Home() {
             Every component is fully documented in our interactive Storybook. 
             Tweak props, test accessibility, and explore all variations live.
           </p>
-          <a href="/storybook" className={styles.btnPrimary} target="_blank" rel="noopener noreferrer">
+          <a href="storybook/" className={styles.btnPrimary} target="_blank" rel="noopener noreferrer">
             Open Storybook ↗
           </a>
         </div>
@@ -244,7 +244,7 @@ export default function Home() {
         <p>
           Built with ❤️ using Next.js &amp; SCSS —{' '}
           <a
-            href="https://github.com/your-username/moddular-mfe"
+            href="https://github.com/vatsaakash/moddular-mfe"
             target="_blank"
             rel="noopener noreferrer"
           >

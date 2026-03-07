@@ -40,34 +40,28 @@ function getStoredTheme(): Theme {
 interface ThemeProviderProps {
   children: ReactNode;
   defaultTheme?: Theme;
-  theme?: Theme; // Controlled theme
+  theme?: Theme;
   brand?: string;
 }
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'system',
+  defaultTheme = 'dark', // Changed default from 'system' to 'dark'
   theme: controlledTheme,
   brand,
 }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>(controlledTheme || defaultTheme);
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
 
   const applyTheme = useCallback((t: Theme) => {
     const resolved = t === 'system' ? getSystemTheme() : t;
     setResolvedTheme(resolved);
 
     const root = document.documentElement;
-    root.setAttribute('data-theme', resolved);
-
-    // If 'system', we keep the attribute so that brand overrides work correctly,
-    // but the actual color tokens are still handled by _themes.scss if needed.
-    // Actually, to make it work reliably with the existing SCSS, 
-    // we should only remove it if we REALLY want the OS to handle it 100%.
-    // But the user seems to want to see the attribute.
     if (t === 'system') {
-      // root.removeAttribute('data-theme'); // Let's keep it for now as 'light' or 'dark'
-      // To follow the original logic but fix the "missing" issue for users:
+      root.removeAttribute('data-theme');
+    } else {
+      root.setAttribute('data-theme', t);
     }
   }, []);
 
@@ -82,26 +76,30 @@ export function ThemeProvider({
 
   const setTheme = useCallback(
     (newTheme: Theme) => {
-      if (!controlledTheme) {
+      // Only update local state/storage if not controlled
+      if (controlledTheme === undefined) {
         setThemeState(newTheme);
         localStorage.setItem(STORAGE_KEY, newTheme);
+        applyTheme(newTheme);
       }
-      applyTheme(newTheme);
     },
     [controlledTheme, applyTheme]
   );
 
-  // Initialize and Sync
+  // Initial mount and prop sync
   useEffect(() => {
     const stored = getStoredTheme();
-    const initialTheme = controlledTheme || stored || defaultTheme;
+    // Priority: Controlled -> Stored (if not controlled) -> Default
+    const initialTheme = controlledTheme !== undefined 
+      ? controlledTheme 
+      : (localStorage.getItem(STORAGE_KEY) ? stored : defaultTheme);
     
     setThemeState(initialTheme);
     applyTheme(initialTheme);
     applyBrand(brand);
   }, [controlledTheme, defaultTheme, brand, applyTheme, applyBrand]);
 
-  // Listen for system theme changes
+  // Listen for system theme changes (only matters if resolved theme is 'system')
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     const handler = () => {

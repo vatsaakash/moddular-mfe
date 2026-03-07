@@ -1,0 +1,127 @@
+// ============================================================
+// MIXINS & UTILITIES — Moddular MFE
+// ============================================================
+
+@use 'variables' as *;
+
+// ── Responsive Breakpoints ──────────────────────────────────
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) { @content; }
+  } @else if $breakpoint == 2xl {
+    @media (min-width: $breakpoint-2xl) { @content; }
+  }
+}
+
+@mixin respond-below($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: ($breakpoint-sm - 1px)) { @content; }
+  } @else if $breakpoint == md {
+    @media (max-width: ($breakpoint-md - 1px)) { @content; }
+  } @else if $breakpoint == lg {
+    @media (max-width: ($breakpoint-lg - 1px)) { @content; }
+  } @else if $breakpoint == xl {
+    @media (max-width: ($breakpoint-xl - 1px)) { @content; }
+  }
+}
+
+// ── Focus Ring (accessibility) ──────────────────────────────
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+// ── Screen Reader Only ──────────────────────────────────────
+@mixin sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ── Reduced Motion ──────────────────────────────────────────
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// ── Smooth Transition ───────────────────────────────────────
+@mixin smooth-transition($properties...) {
+  $duration: $transition-base;
+
+  @if length($properties) == 0 {
+    $properties: all;
+  }
+
+  transition-property: $properties;
+  transition-duration: $duration;
+  transition-timing-function: ease;
+
+  @include reduced-motion {
+    transition-duration: 0.01ms;
+  }
+}
+
+// ── Truncate Text ───────────────────────────────────────────
+@mixin truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// ── Flex Utilities ──────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// ── Glass Effect ────────────────────────────────────────────
+@mixin glass-effect($blur: 12px) {
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  background-color: var(--color-surface-overlay);
+}
+
+// ── Container ───────────────────────────────────────────────
+@mixin container($max-width: 1200px) {
+  width: 100%;
+  max-width: $max-width;
+  margin-inline: auto;
+  padding-inline: $space-base;
+
+  @include respond-to(md) {
+    padding-inline: $space-lg;
+  }
+
+  @include respond-to(xl) {
+    padding-inline: $space-xl;
+  }
+}

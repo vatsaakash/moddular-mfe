@@ -1,0 +1,22 @@
+Goal 
+- I am looking to build a project that is a collection of multiple MFE components .eg FAQ, Accordian, Ratings, card acraousal etc
+- It should be build on next JS and SCSS 
+- I am looking to build it so that I can later use them in my projcet and things can go faster
+- As of now I am lookingf to host it on Github pages so keep that ion mind 
+- Create a folder structure that supports github pages so that its free for me.
+- Create a script so taht runnig that just pushes everything to github pages 
+- I am looking to make it open source and keep contribution from people and for that create a contribution.md and draft a format 
+- Also I am looking to add a storybook where we can demonstrate all the MFE components whith all the props and variants that can be used as well as the storybook should have the capability to demo on the baisis if we change anything on storybook it should reflrect on the storybook just like and actual use of MFE
+
+
+
+Requirements 
+- every components should be theme based and should support multiple themes dark light and system theme 
+- every components should be responsive and should support all the screen sizes 
+- every components should be accessible and should support all the accessibility standards 
+- every components should be performant and should support all the performance standards 
+- every components should be secure and should support all the security standards
+- every components should be SEO friendly and should support all the SEO standards
+- every components should be scalable and should support all the scalability standards
+- every components should be maintainable and should support all the maintainability standards 
+- we should have a variable scss file that is global and if we change them it should accomdate the new color scheme like white lable like brand1 brand 2 like that  

@@ -1,0 +1,55 @@
+// ============================================================
+// BRAND OVERRIDES — White-Label Support
+// ============================================================
+// Switch brands by adding a data attribute to <html>:
+//   <html data-brand="brand1">
+//
+// To add a new brand:
+//   1. Copy one of the blocks below
+//   2. Change the selector to [data-brand="yourBrand"]
+//   3. Override any CSS custom properties you need
+// ============================================================
+
+// ── Brand 1: Ocean Blue ─────────────────────────────────────
+[data-brand='brand1'] {
+  --color-primary: #0984e3;
+  --color-primary-hover: #0873c7;
+  --color-primary-light: #dff0fc;
+  --color-primary-text: #ffffff;
+  --color-accent: #00cec9;
+  --color-accent-hover: #00b5b0;
+  --color-accent-light: #e0fffe;
+}
+
+// ── Brand 2: Sunset Orange ──────────────────────────────────
+[data-brand='brand2'] {
+  --color-primary: #e17055;
+  --color-primary-hover: #d35d43;
+  --color-primary-light: #fde8e3;
+  --color-primary-text: #ffffff;
+  --color-accent: #fdcb6e;
+  --color-accent-hover: #f0be52;
+  --color-accent-light: #fff8e7;
+}
+
+// ── Brand 3: Forest Green ───────────────────────────────────
+[data-brand='brand3'] {
+  --color-primary: #00b894;
+  --color-primary-hover: #019e7e;
+  --color-primary-light: #d4f5eb;
+  --color-primary-text: #ffffff;
+  --color-accent: #55efc4;
+  --color-accent-hover: #3de0af;
+  --color-accent-light: #e0fff5;
+}
+
+// ── Brand 4: Royal Purple ───────────────────────────────────
+[data-brand='brand4'] {
+  --color-primary: #a29bfe;
+  --color-primary-hover: #8c83f0;
+  --color-primary-light: #ece9ff;
+  --color-primary-text: #1a1a2e;
+  --color-accent: #fd79a8;
+  --color-accent-hover: #f06292;
+  --color-accent-light: #ffe0ee;
+}

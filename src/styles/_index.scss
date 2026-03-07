@@ -1,0 +1,12 @@
+// ============================================================
+// BARREL FILE — Import all partials
+// ============================================================
+// Usage in component .module.scss files:
+//   @use '@/styles' as *;
+// ============================================================
+
+@forward 'variables';
+@forward 'colors';
+@forward 'themes';
+@forward 'brands';
+@forward 'mixins';

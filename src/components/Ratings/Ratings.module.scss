@@ -1,0 +1,96 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.ratings {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-sm;
+  font-family: $font-family-base;
+}
+
+// ── Size Variants ───────────────────────────────────────────
+
+.sm .starBtn {
+  width: 20px;
+  height: 20px;
+}
+
+.md .starBtn {
+  width: 28px;
+  height: 28px;
+}
+
+.lg .starBtn {
+  width: 36px;
+  height: 36px;
+}
+
+.sm .label {
+  font-size: $font-size-xs;
+}
+
+.md .label {
+  font-size: $font-size-sm;
+}
+
+.lg .label {
+  font-size: $font-size-base;
+}
+
+// ── Stars Container ─────────────────────────────────────────
+
+.stars {
+  display: inline-flex;
+  gap: $space-xs;
+}
+
+// ── Star Button ─────────────────────────────────────────────
+
+.starBtn {
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-border);
+  line-height: 1;
+
+  @include smooth-transition(color, transform);
+  @include focus-ring;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  &:hover:not(:disabled) {
+    transform: scale(1.15);
+  }
+
+  &.filled {
+    color: var(--color-accent);
+  }
+
+  .readonly & {
+    cursor: default;
+    pointer-events: none;
+
+    &.filled {
+      color: var(--color-accent);
+    }
+  }
+}
+
+// ── Label ───────────────────────────────────────────────────
+
+.label {
+  color: var(--color-text-secondary);
+  font-weight: $font-weight-medium;
+  margin-left: $space-xs;
+}
+
+// ── Readonly ────────────────────────────────────────────────
+
+.readonly {
+  opacity: 0.9;
+}

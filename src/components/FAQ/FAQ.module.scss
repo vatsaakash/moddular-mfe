@@ -1,0 +1,145 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.faq {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: $font-family-base;
+}
+
+// ── Variants ────────────────────────────────────────────────
+
+.bordered {
+  .item {
+    border: 1px solid var(--color-border);
+    border-radius: $radius-md;
+    margin-bottom: $space-sm;
+    overflow: hidden;
+
+    @include smooth-transition(border-color);
+
+    &:hover {
+      border-color: var(--color-border-hover);
+    }
+
+    &.open {
+      border-color: var(--color-primary);
+    }
+  }
+}
+
+.flush {
+  .item {
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.card {
+  .item {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border-radius: $radius-lg;
+    margin-bottom: $space-md;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    overflow: hidden;
+
+    @include smooth-transition(box-shadow, transform);
+
+    &:hover {
+      box-shadow: 0 4px 16px var(--shadow-color);
+    }
+
+    &.open {
+      box-shadow: 0 4px 20px var(--shadow-color);
+    }
+  }
+}
+
+// ── Trigger ─────────────────────────────────────────────────
+
+.trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-base;
+  padding: $space-lg;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  line-height: $line-height-base;
+
+  @include focus-ring;
+  @include smooth-transition(background-color);
+
+  @include respond-below(md) {
+    padding: $space-base;
+    font-size: $font-size-sm;
+  }
+
+  &:hover {
+    background-color: var(--color-surface-raised);
+  }
+}
+
+.question {
+  flex: 1;
+}
+
+// ── Chevron Icon ────────────────────────────────────────────
+
+.icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-full;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+
+  @include smooth-transition(transform, background-color);
+
+  .open & {
+    transform: rotate(180deg);
+    background: var(--color-primary);
+    color: var(--color-primary-text);
+  }
+}
+
+// ── Panel ───────────────────────────────────────────────────
+
+.panel {
+  overflow: hidden;
+}
+
+.answer {
+  padding: 0 $space-lg $space-lg;
+  color: var(--color-text-secondary);
+  font-size: $font-size-sm;
+  line-height: $line-height-relaxed;
+
+  @include respond-below(md) {
+    padding: 0 $space-base $space-base;
+    font-size: $font-size-xs;
+  }
+}
+
+// ── Open State ──────────────────────────────────────────────
+
+.open {
+  .trigger {
+    font-weight: $font-weight-semibold;
+  }
+}

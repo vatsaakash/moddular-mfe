@@ -1,0 +1,76 @@
+@use '@/styles/colors';
+@use '@/styles/themes';
+@use '@/styles/brands';
+@use '@/styles/variables' as *;
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+
+  @media (prefers-reduced-motion: reduce) {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family-heading;
+  line-height: $line-height-tight;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: var(--color-primary-hover);
+  }
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Storybook Overrides ──────────────────────────────────── */
+
+body.sb-show-main,
+#storybook-root,
+.sb-main-padded {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}

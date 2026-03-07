@@ -1,0 +1,85 @@
+// ============================================================
+// THEME DEFINITIONS — Light / Dark / System
+// ============================================================
+
+// Light theme is the default (defined in _colors.scss on :root)
+
+// ── Dark Theme ──────────────────────────────────────────────
+[data-theme='dark'] {
+  --color-bg: #0f0f1a;
+  --color-bg-alt: #16162a;
+  --color-surface: #1e1e35;
+  --color-surface-raised: #2a2a45;
+  --color-surface-overlay: rgba(30, 30, 53, 0.95);
+
+  --color-text: #e8e8f0;
+  --color-text-secondary: #a0a0b8;
+  --color-text-muted: #6b6b80;
+  --color-text-inverse: #1a1a2e;
+
+  --color-primary: #a29bfe;
+  --color-primary-hover: #b8b3ff;
+  --color-primary-light: #2d2a52;
+  --color-primary-text: #1a1a2e;
+
+  --color-accent: #55efc4;
+  --color-accent-hover: #72f5d4;
+  --color-accent-light: #1a3d35;
+
+  --color-border: #2d2d45;
+  --color-border-hover: #3d3d5c;
+  --color-border-focus: var(--color-primary);
+
+  --color-success: #55efc4;
+  --color-success-light: #1a3d35;
+  --color-warning: #ffeaa7;
+  --color-warning-light: #3d3520;
+  --color-error: #ff7675;
+  --color-error-light: #3d1f1f;
+  --color-info: #74b9ff;
+  --color-info-light: #1f2d3d;
+
+  --color-focus-ring: rgba(162, 155, 254, 0.5);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+// ── System Theme (if no explicit data-theme, respect OS) ────
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-bg: #0f0f1a;
+    --color-bg-alt: #16162a;
+    --color-surface: #1e1e35;
+    --color-surface-raised: #2a2a45;
+    --color-surface-overlay: rgba(30, 30, 53, 0.95);
+
+    --color-text: #e8e8f0;
+    --color-text-secondary: #a0a0b8;
+    --color-text-muted: #6b6b80;
+    --color-text-inverse: #1a1a2e;
+
+    --color-primary: #a29bfe;
+    --color-primary-hover: #b8b3ff;
+    --color-primary-light: #2d2a52;
+    --color-primary-text: #1a1a2e;
+
+    --color-accent: #55efc4;
+    --color-accent-hover: #72f5d4;
+    --color-accent-light: #1a3d35;
+
+    --color-border: #2d2d45;
+    --color-border-hover: #3d3d5c;
+    --color-border-focus: var(--color-primary);
+
+    --color-success: #55efc4;
+    --color-success-light: #1a3d35;
+    --color-warning: #ffeaa7;
+    --color-warning-light: #3d3520;
+    --color-error: #ff7675;
+    --color-error-light: #3d1f1f;
+    --color-info: #74b9ff;
+    --color-info-light: #1f2d3d;
+
+    --color-focus-ring: rgba(162, 155, 254, 0.5);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+  }
+}

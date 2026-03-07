@@ -1,0 +1,52 @@
+// ============================================================
+// SEMANTIC COLOR TOKENS — Moddular MFE
+// These CSS custom properties are overridden per-theme in _themes.scss
+// ============================================================
+
+:root,
+[data-theme='light'] {
+  // ── Backgrounds ─────────────────────────────────────────
+  --color-bg: #ffffff;
+  --color-bg-alt: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f1f3f5;
+  --color-surface-overlay: rgba(255, 255, 255, 0.9);
+
+  // ── Text ────────────────────────────────────────────────
+  --color-text: #1a1a2e;
+  --color-text-secondary: #4a5568;
+  --color-text-muted: #a0aec0;
+  --color-text-inverse: #ffffff;
+
+  // ── Brand / Primary ─────────────────────────────────────
+  --color-primary: #6c5ce7;
+  --color-primary-hover: #5a4bd1;
+  --color-primary-light: #e8e4fd;
+  --color-primary-text: #ffffff;
+
+  // ── Accent ──────────────────────────────────────────────
+  --color-accent: #00cec9;
+  --color-accent-hover: #00b5b0;
+  --color-accent-light: #e0fffe;
+
+  // ── Borders ─────────────────────────────────────────────
+  --color-border: #e2e8f0;
+  --color-border-hover: #cbd5e0;
+  --color-border-focus: var(--color-primary);
+
+  // ── States ──────────────────────────────────────────────
+  --color-success: #00b894;
+  --color-success-light: #d4f5eb;
+  --color-warning: #fdcb6e;
+  --color-warning-light: #fff8e7;
+  --color-error: #e17055;
+  --color-error-light: #fde8e3;
+  --color-info: #74b9ff;
+  --color-info-light: #e3f2ff;
+
+  // ── Focus Ring ──────────────────────────────────────────
+  --color-focus-ring: rgba(108, 92, 231, 0.4);
+
+  // ── Shadows (theme-aware) ──────────────────────────────
+  --shadow-color: rgba(0, 0, 0, 0.08);
+}

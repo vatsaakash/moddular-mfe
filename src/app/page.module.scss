@@ -1,0 +1,324 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+/* ── Main ─────────────────────────────────────────────────── */
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Container ────────────────────────────────────────────── */
+
+.container {
+  @include container(900px);
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  padding: $space-3xl $space-base;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 20% 50%, var(--color-primary-light) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, var(--color-accent-light) 0%, transparent 50%),
+    var(--color-bg);
+
+  @include respond-to(md) {
+    padding: 6rem $space-xl;
+  }
+}
+
+.heroContent {
+  @include container(700px);
+}
+
+.badge {
+  display: inline-block;
+  padding: $space-xs $space-base;
+  border-radius: $radius-full;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: $space-lg;
+}
+
+.title {
+  font-family: $font-family-heading;
+  font-size: clamp(2.2rem, 5vw, $font-size-3xl);
+  font-weight: $font-weight-bold;
+  line-height: 1.1;
+  margin-bottom: $space-base;
+}
+
+.gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: $font-size-md;
+  color: var(--color-text-secondary);
+  max-width: 560px;
+  margin: 0 auto $space-xl;
+  line-height: $line-height-relaxed;
+
+  @include respond-below(md) {
+    font-size: $font-size-base;
+  }
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+
+.actions {
+  display: flex;
+  gap: $space-base;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btnPrimary,
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-md $space-xl;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  text-decoration: none;
+
+  @include smooth-transition(background-color, transform, box-shadow);
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.btnPrimary {
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+  box-shadow: 0 4px 14px rgba(108, 92, 231, 0.3);
+
+  &:hover {
+    background: var(--color-primary-hover);
+    box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+    color: var(--color-primary-text);
+  }
+}
+
+.btnSecondary {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+
+  &:hover {
+    background: var(--color-surface);
+    border-color: var(--color-border-hover);
+    color: var(--color-text);
+  }
+}
+
+/* ── Theme Section ────────────────────────────────────────── */
+
+.themeSection {
+  padding: $space-2xl $space-base;
+  text-align: center;
+  background: var(--color-bg-alt);
+}
+
+.sectionTitle {
+  font-family: $font-family-heading;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  margin-bottom: $space-sm;
+}
+
+.sectionDesc {
+  color: var(--color-text-secondary);
+  font-size: $font-size-sm;
+  margin-bottom: $space-lg;
+}
+
+.themeToggle {
+  display: inline-flex;
+  gap: $space-sm;
+  padding: $space-xs;
+  background: var(--color-surface);
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+}
+
+.themeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  padding: $space-sm $space-base;
+  border: none;
+  border-radius: $radius-md;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+
+  @include smooth-transition(background-color, color, box-shadow);
+  @include focus-ring;
+
+  &:hover {
+    background: var(--color-surface-raised);
+  }
+
+  &.active {
+    background: var(--color-primary);
+    color: var(--color-primary-text);
+    box-shadow: $shadow-sm;
+  }
+}
+
+.currentTheme {
+  margin-top: $space-base;
+  font-size: $font-size-sm;
+  color: var(--color-text-muted);
+}
+
+/* ── Components Demo ──────────────────────────────────────── */
+
+.components {
+  padding: $space-2xl $space-base;
+  flex: 1;
+}
+
+.demoBlock {
+  margin-bottom: $space-2xl;
+  padding: $space-xl;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+
+  @include respond-below(md) {
+    padding: $space-base;
+  }
+}
+
+.demoTitle {
+  font-family: $font-family-heading;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  margin-bottom: $space-xs;
+}
+
+.demoVariant {
+  font-size: $font-size-xs;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: $space-base;
+}
+
+.demoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $space-base;
+  flex-wrap: wrap;
+  gap: $space-base;
+}
+
+.localThemeToggle {
+  display: inline-flex;
+  gap: $space-xs;
+  padding: 4px;
+  background: var(--color-bg-alt);
+  border-radius: $radius-md;
+  border: 1px solid var(--color-border);
+}
+
+.localThemeBtn {
+  font-size: $font-size-xs;
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-radius: $radius-sm;
+  cursor: pointer;
+  
+  @include smooth-transition(background-color, color);
+
+  &:hover {
+    background: var(--color-surface);
+  }
+
+  &.active {
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: $shadow-sm;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.ratingsRow {
+  display: flex;
+  gap: $space-xl;
+  flex-wrap: wrap;
+
+  > div {
+    flex: 1;
+    min-width: 160px;
+  }
+}
+
+/* ── Storybook Section ────────────────────────────────────── */
+
+.storybookSection {
+  padding: $space-2xl $space-base;
+  text-align: center;
+  background: var(--color-surface-raised);
+}
+
+.storybookCard {
+  @include container(600px);
+  background: var(--color-surface);
+  padding: $space-xl;
+  border-radius: $radius-xl;
+  border: 1px solid var(--color-border);
+  box-shadow: $shadow-md;
+  
+  h3 {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    margin-bottom: $space-sm;
+  }
+  
+  p {
+    color: var(--color-text-secondary);
+    margin-bottom: $space-xl;
+    line-height: $line-height-relaxed;
+  }
+
+  .btnPrimary {
+    text-decoration: none;
+  }
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+
+.footer {
+  padding: $space-xl $space-base;
+  text-align: center;
+  background: var(--color-bg-alt);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: $font-size-sm;
+
+  a {
+    font-weight: $font-weight-semibold;
+  }
+}

@@ -2,8 +2,8 @@
 
 > A collection of accessible, themeable, and responsive micro-frontend components built with **Next.js** & **SCSS**.
 
-[![GitHub Pages](https://img.shields.io/badge/demo-GitHub%20Pages-blue)](https://your-username.github.io/moddular-mfe/)
-[![Storybook](https://img.shields.io/badge/storybook-live-ff4785)](https://your-username.github.io/moddular-mfe/storybook/)
+[![GitHub Pages](https://img.shields.io/badge/demo-GitHub%20Pages-blue)](https://vatsaakash.github.io/moddular-mfe/)
+[![Storybook](https://img.shields.io/badge/storybook-live-ff4785)](https://vatsaakash.github.io/moddular-mfe/storybook/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](#license)
 
 ---
@@ -41,10 +41,42 @@
 ### Installation
 
 ```bash
-git clone https://github.com/your-username/moddular-mfe.git
+git clone https://github.com/vatsaakash/moddular-mfe.git
 cd moddular-mfe
 npm install
 ```
+
+---
+
+## 📦 Using in Your Project
+
+You can use these components in any React/Next.js project.
+
+### 1. Install via GitHub
+Run this in your target project's terminal:
+
+```bash
+npm install https://github.com/vatsaakash/moddular-mfe
+```
+
+### 2. Import and Use
+Import components directly from the library:
+
+```tsx
+import { Ratings, ThemeProvider } from 'moddular-mfe';
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <Ratings value={4} theme="dark" />
+    </ThemeProvider>
+  );
+}
+```
+
+> [!NOTE]
+> Ensure your project supports **SCSS Modules** and has `sass` installed: `npm install -D sass`.
+
 
 ### Development
 
@@ -125,18 +157,42 @@ All spacing, typography, and shadows use centralized variables:
 
 ---
 
+---
+
 ## 📖 Using a Component
 
 ```tsx
-import { FAQ } from '@/components/FAQ';
+import { FAQ, Ratings } from 'moddular-mfe';
 
 const items = [
   { question: 'What is this?', answer: 'A reusable component!' },
   { question: 'Is it accessible?', answer: 'Yes — full ARIA support.' },
 ];
 
+// Use components anywhere
 <FAQ items={items} variant="card" allowMultiple />
+
+<Ratings
+  defaultValue={3}
+  icon="star"
+  max={5}
+  showLabel
+  size="md"
+/>
 ```
+
+### Component API: Ratings
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `max` | `number` | `5` | Maximum number of icons |
+| `value` | `number` | `-` | Controlled rating value |
+| `icon` | `'star'\|'heart'\|'circle'` | `'star'` | The shape of the rating icon |
+| `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
+| `readonly` | `boolean` | `false` | Disable user interaction |
+| `theme` | `'light'\|'dark'` | `-` | Component-level theme override |
+
+---
 
 ---
 

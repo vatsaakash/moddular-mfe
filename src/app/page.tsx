@@ -93,6 +93,9 @@ export default function Home() {
             <a href="#components" className={styles.btnPrimary}>
               Explore Components
             </a>
+            <a href="storybook/" className={styles.btnSecondary} target="_blank" rel="noopener noreferrer">
+              Storybook ↗
+            </a>
             <a
               href="https://github.com/vatsaakash/moddular-mfe"
               className={styles.btnSecondary}
@@ -225,6 +228,54 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Usage Section */}
+      <section className={styles.usageSection}>
+        <div className={styles.container}>
+          <h2 className={styles.sectionTitle}>Ready to Integrate?</h2>
+          <p className={styles.sectionDesc}>
+            Our components are built for maximum reusability. Here is how to get started in seconds.
+          </p>
+
+          <div className={styles.usageGrid}>
+            <div className={styles.step}>
+              <div className={styles.stepNumber}>1</div>
+              <div className={styles.stepInfo}>
+                <h4>Install Dependency</h4>
+                <p>Add the library to your React project directly via GitHub.</p>
+                <div className={styles.codeBox}>
+                  <code>npm install https://github.com/vatsaakash/moddular-mfe</code>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.step}>
+              <div className={styles.stepNumber}>2</div>
+              <div className={styles.stepInfo}>
+                <h4>Wrap your App</h4>
+                <p>Add the ThemeProvider for automatic dark/light mode support.</p>
+                <div className={styles.codeBox}>
+                  <code>{`import { ThemeProvider } from 'moddular-mfe';`}</code>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.step}>
+              <div className={styles.stepNumber}>3</div>
+              <div className={styles.stepInfo}>
+                <h4>Import & Use</h4>
+                <p>
+                  Drop any component into your UI and customize via props. 
+                  View the <a href="storybook/" target="_blank" rel="noopener noreferrer"><strong>Storybook code</strong></a> for live snippets.
+                </p>
+                <div className={styles.codeBox}>
+                  <code>{`import { Ratings } from 'moddular-mfe';\n\n<Ratings\n  defaultValue={3}\n  icon="star"\n  max={5}\n  showLabel\n  size="md"\n/>`}</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Storybook Section */}
       <section className={styles.storybookSection}>
         <div className={styles.storybookCard}>
@@ -241,16 +292,28 @@ export default function Home() {
 
       {/* Footer */}
       <footer className={styles.footer}>
-        <p>
-          Built with ❤️ using Next.js &amp; SCSS —{' '}
-          <a
-            href="https://github.com/vatsaakash/moddular-mfe"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Contribute on GitHub
-          </a>
-        </p>
+        <div className={styles.container}>
+          <p>
+            &copy; {new Date().getFullYear()} <strong>Akash Ranjan</strong> (vatsaakash). Built with ❤️ using Next.js &amp; SCSS.
+          </p>
+          <div className={styles.footerLinks}>
+            <a
+              href="https://github.com/vatsaakash"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub Profile ↗
+            </a>
+            <span className={styles.divider}>•</span>
+            <a
+              href="https://github.com/vatsaakash/moddular-mfe"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Project Repository
+            </a>
+          </div>
+        </div>
       </footer>
     </main>
   );

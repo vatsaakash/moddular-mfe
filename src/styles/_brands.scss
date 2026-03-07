@@ -11,7 +11,8 @@
 // ============================================================
 
 // ── Brand 1: Ocean Blue ─────────────────────────────────────
-:root[data-brand='brand1'] {
+:root[data-brand='brand1'],
+[data-brand='brand1'] [data-component-theme] {
   --color-primary: #0984e3;
   --color-primary-hover: #0873c7;
   --color-primary-light: #dff0fc;
@@ -22,7 +23,8 @@
 }
 
 // ── Brand 2: Sunset Orange ──────────────────────────────────
-:root[data-brand='brand2'] {
+:root[data-brand='brand2'],
+[data-brand='brand2'] [data-component-theme] {
   --color-primary: #e17055;
   --color-primary-hover: #d35d43;
   --color-primary-light: #fde8e3;
@@ -33,7 +35,8 @@
 }
 
 // ── Brand 3: Forest Green ───────────────────────────────────
-:root[data-brand='brand3'] {
+:root[data-brand='brand3'],
+[data-brand='brand3'] [data-component-theme] {
   --color-primary: #00b894;
   --color-primary-hover: #019e7e;
   --color-primary-light: #d4f5eb;
@@ -44,7 +47,8 @@
 }
 
 // ── Brand 4: Royal Purple ───────────────────────────────────
-:root[data-brand='brand4'] {
+:root[data-brand='brand4'],
+[data-brand='brand4'] [data-component-theme] {
   --color-primary: #a29bfe;
   --color-primary-hover: #8c83f0;
   --color-primary-light: #ece9ff;

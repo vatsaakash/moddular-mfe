@@ -101,7 +101,7 @@ export function Accordion({
   return (
     <div
       className={`${styles.accordion} ${styles[variant]} ${className}`}
-      data-theme={theme}
+      data-component-theme={theme}
     >
       {items.map((item, index) => {
         const isOpen = openIndices.has(index);

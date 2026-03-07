@@ -5,7 +5,8 @@
 // Light theme is the default (defined in _colors.scss on :root)
 
 // ── Dark Theme ──────────────────────────────────────────────
-[data-theme='dark'] {
+[data-theme='dark'],
+[data-component-theme='dark'] {
   --color-bg: #0f0f1a;
   --color-bg-alt: #16162a;
   --color-surface: #1e1e35;

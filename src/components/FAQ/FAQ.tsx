@@ -55,7 +55,7 @@ export function FAQ({
     <div
       className={`${styles.faq} ${styles[variant]} ${className}`}
       role="list"
-      data-theme={theme}
+      data-component-theme={theme}
     >
       {items.map((item, index) => {
         const isOpen = openIndices.has(index);

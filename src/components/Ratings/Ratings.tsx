@@ -126,7 +126,7 @@ export function Ratings({
       } ${className}`}
       role="group"
       aria-label={`Rating: ${currentValue} out of ${max}`}
-      data-theme={theme}
+      data-component-theme={theme}
     >
       <div className={styles.stars} role="radiogroup">
         {Array.from({ length: max }, (_, i) => {

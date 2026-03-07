@@ -6,6 +6,9 @@
 
 set -e
 
+# Change to the root directory of the project
+cd "$(dirname "$0")/.."
+
 echo "🏗️  Building Next.js static export..."
 NEXT_PUBLIC_BASE_PATH="/moddular-mfe" npm run build
 
@@ -17,6 +20,7 @@ echo ""
 echo "📦  Merging builds..."
 # Copy storybook output into the Next.js export folder
 cp -r storybook-static out/storybook
+touch out/.nojekyll
 
 echo ""
 echo "🚀  Deploying to GitHub Pages..."

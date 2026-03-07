@@ -297,6 +297,7 @@
   align-items: center;
   justify-content: space-between;
   gap: $space-md;
+  flex-direction: column;
 }
 
 .followBtn {

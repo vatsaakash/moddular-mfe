@@ -1,7 +1,12 @@
 self.__BUILD_MANIFEST = {
   "__rewrites": {
     "afterFiles": [],
-    "beforeFiles": [],
+    "beforeFiles": [
+      {
+        "source": "/moddular-mfe//_next/:path+",
+        "destination": "/moddular-mfe/_next/:path+"
+      }
+    ],
     "fallback": []
   },
   "sortedPages": [

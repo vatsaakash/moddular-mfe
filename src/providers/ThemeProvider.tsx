@@ -40,15 +40,17 @@ function getStoredTheme(): Theme {
 interface ThemeProviderProps {
   children: ReactNode;
   defaultTheme?: Theme;
+  theme?: Theme; // Controlled theme
   brand?: string;
 }
 
 export function ThemeProvider({
   children,
   defaultTheme = 'system',
+  theme: controlledTheme,
   brand,
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme);
+  const [theme, setThemeState] = useState<Theme>(controlledTheme || defaultTheme);
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
 
   const applyTheme = useCallback((t: Theme) => {
@@ -58,10 +60,14 @@ export function ThemeProvider({
     const root = document.documentElement;
     root.setAttribute('data-theme', resolved);
 
-    // Remove the opposite theme attribute if the user chose 'system'
-    // so the CSS media-query fallback in _themes.scss can also work
+    // If 'system', we keep the attribute so that brand overrides work correctly,
+    // but the actual color tokens are still handled by _themes.scss if needed.
+    // Actually, to make it work reliably with the existing SCSS, 
+    // we should only remove it if we REALLY want the OS to handle it 100%.
+    // But the user seems to want to see the attribute.
     if (t === 'system') {
-      root.removeAttribute('data-theme');
+      // root.removeAttribute('data-theme'); // Let's keep it for now as 'light' or 'dark'
+      // To follow the original logic but fix the "missing" issue for users:
     }
   }, []);
 
@@ -76,41 +82,40 @@ export function ThemeProvider({
 
   const setTheme = useCallback(
     (newTheme: Theme) => {
-      setThemeState(newTheme);
-      localStorage.setItem(STORAGE_KEY, newTheme);
+      if (!controlledTheme) {
+        setThemeState(newTheme);
+        localStorage.setItem(STORAGE_KEY, newTheme);
+      }
       applyTheme(newTheme);
     },
-    [applyTheme]
+    [controlledTheme, applyTheme]
   );
 
-  // Initialize on mount
+  // Initialize and Sync
   useEffect(() => {
     const stored = getStoredTheme();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setThemeState(stored);
-    applyTheme(stored);
+    const initialTheme = controlledTheme || stored || defaultTheme;
+    
+    setThemeState(initialTheme);
+    applyTheme(initialTheme);
     applyBrand(brand);
-  }, [applyTheme, applyBrand, brand]);
-
-  // Update brand when prop changes
-  useEffect(() => {
-    applyBrand(brand);
-  }, [brand, applyBrand]);
+  }, [controlledTheme, defaultTheme, brand, applyTheme, applyBrand]);
 
   // Listen for system theme changes
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     const handler = () => {
-      if (theme === 'system') {
+      const currentTheme = controlledTheme || theme;
+      if (currentTheme === 'system') {
         applyTheme('system');
       }
     };
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
-  }, [theme, applyTheme]);
+  }, [theme, controlledTheme, applyTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme: controlledTheme || theme, resolvedTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

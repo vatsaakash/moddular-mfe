@@ -64,7 +64,7 @@ const preview: Preview = {
     },
   },
   initialGlobals: {
-    theme: 'light',
+    theme: 'dark',
     brand: 'none',
   },
   decorators: [WithTheme],

@@ -103,17 +103,30 @@ bash scripts/deploy.sh
 
 ## 🎨 Theming
 
-### Theme Toggle
+### Theme Management
 
-The built-in `ThemeProvider` supports three modes:
+The built-in `ThemeProvider` supports three modes and defaults to **dark** mode if no preference is specified.
+
+#### Controlled vs Uncontrolled
+- **Uncontrolled**: Pass `defaultTheme="light"` (defaults to `"dark"`). It will be saved to `localStorage`.
+- **Controlled**: Pass `theme="dark"`. This strictly overrides `localStorage` and system preferences.
 
 ```tsx
-import { useTheme } from 'moddular-mfe';
+import { ThemeProvider, useTheme } from 'moddular-mfe';
 
-const { theme, setTheme, resolvedTheme } = useTheme();
-setTheme('light');  // Force light
-setTheme('dark');   // Force dark
-setTheme('system'); // Follow OS preference
+export default function App() {
+  return (
+    <ThemeProvider theme="dark"> {/* Strictly dark */}
+      <MyContent />
+    </ThemeProvider>
+  );
+}
+
+function MyContent() {
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  // setTheme('light') will only work if the prop 'theme' is not passed above
+  return <p>Current: {resolvedTheme}</p>;
+}
 ```
 
 ### Brand Overrides (White-Label)

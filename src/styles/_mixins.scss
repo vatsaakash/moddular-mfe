@@ -2,32 +2,65 @@
 // MIXINS & UTILITIES — Moddular MFE
 // ============================================================
 
+@use 'sass:list';
 @use 'variables' as *;
 
 // ── Responsive Breakpoints ──────────────────────────────────
 @mixin respond-to($breakpoint) {
-  @if $breakpoint == sm {
-    @media (min-width: $breakpoint-sm) { @content; }
-  } @else if $breakpoint == md {
-    @media (min-width: $breakpoint-md) { @content; }
-  } @else if $breakpoint == lg {
-    @media (min-width: $breakpoint-lg) { @content; }
-  } @else if $breakpoint == xl {
-    @media (min-width: $breakpoint-xl) { @content; }
-  } @else if $breakpoint == 2xl {
-    @media (min-width: $breakpoint-2xl) { @content; }
+  @if $breakpoint ==sm {
+    @media (min-width: $breakpoint-sm) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint ==md {
+    @media (min-width: $breakpoint-md) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint ==lg {
+    @media (min-width: $breakpoint-lg) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint ==xl {
+    @media (min-width: $breakpoint-xl) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint ==2xl {
+    @media (min-width: $breakpoint-2xl) {
+      @content;
+    }
   }
 }
 
 @mixin respond-below($breakpoint) {
-  @if $breakpoint == sm {
-    @media (max-width: ($breakpoint-sm - 1px)) { @content; }
-  } @else if $breakpoint == md {
-    @media (max-width: ($breakpoint-md - 1px)) { @content; }
-  } @else if $breakpoint == lg {
-    @media (max-width: ($breakpoint-lg - 1px)) { @content; }
-  } @else if $breakpoint == xl {
-    @media (max-width: ($breakpoint-xl - 1px)) { @content; }
+  @if $breakpoint ==sm {
+    @media (max-width: ($breakpoint-sm - 1px)) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint ==md {
+    @media (max-width: ($breakpoint-md - 1px)) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint ==lg {
+    @media (max-width: ($breakpoint-lg - 1px)) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint ==xl {
+    @media (max-width: ($breakpoint-xl - 1px)) {
+      @content;
+    }
   }
 }
 
@@ -78,11 +111,13 @@
 
 // ── Truncate Text ───────────────────────────────────────────
 @mixin truncate($lines: 1) {
-  @if $lines == 1 {
+  @if $lines ==1 {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  } @else {
+  }
+
+  @else {
     display: -webkit-box;
     -webkit-line-clamp: $lines;
     -webkit-box-orient: vertical;

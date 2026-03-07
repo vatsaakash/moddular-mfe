@@ -59,20 +59,24 @@ Run this in your target project's terminal:
 npm install https://github.com/vatsaakash/moddular-mfe
 ```
 
-### 2. Import and Use
-Import components directly from the library:
+### 2. Import CSS and Components
+Import the global styles in your app entry point (e.g., `main.tsx` or `_app.tsx`), and use components directly:
 
 ```tsx
+import 'moddular-mfe/src/app/globals.scss'; // Required for color tokens
 import { Ratings, ThemeProvider } from 'moddular-mfe';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <Ratings value={4} theme="dark" />
+    <ThemeProvider brand="brand1">
+      <Ratings value={4} />
     </ThemeProvider>
   );
 }
 ```
+
+> [!IMPORTANT]
+> You **must** import the global CSS/SCSS file for the theme and brand tokens to work. If you don't import it, CSS variables like `--color-primary` will be undefined.
 
 > [!NOTE]
 > Ensure your project supports **SCSS Modules** and has `sass` installed: `npm install -D sass`.
@@ -104,7 +108,7 @@ bash scripts/deploy.sh
 The built-in `ThemeProvider` supports three modes:
 
 ```tsx
-import { useTheme } from '@/providers/ThemeProvider';
+import { useTheme } from 'moddular-mfe';
 
 const { theme, setTheme, resolvedTheme } = useTheme();
 setTheme('light');  // Force light
@@ -114,7 +118,15 @@ setTheme('system'); // Follow OS preference
 
 ### Brand Overrides (White-Label)
 
-Add a `data-brand` attribute to switch color palettes:
+The `ThemeProvider` now supports a `brand` prop to switch color palettes dynamically:
+
+```tsx
+<ThemeProvider brand="brand1">
+  {/* All components inside will use Brand 1 (Ocean Blue) colors */}
+</ThemeProvider>
+```
+
+Alternatively, you can manually set the `data-brand` attribute on the `<html>` tag:
 
 ```html
 <html data-brand="brand1">  <!-- Ocean Blue -->

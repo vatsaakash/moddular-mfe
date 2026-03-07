@@ -40,11 +40,13 @@ function getStoredTheme(): Theme {
 interface ThemeProviderProps {
   children: ReactNode;
   defaultTheme?: Theme;
+  brand?: string;
 }
 
 export function ThemeProvider({
   children,
   defaultTheme = 'system',
+  brand,
 }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>(defaultTheme);
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
@@ -63,6 +65,15 @@ export function ThemeProvider({
     }
   }, []);
 
+  const applyBrand = useCallback((b?: string) => {
+    const root = document.documentElement;
+    if (b) {
+      root.setAttribute('data-brand', b);
+    } else {
+      root.removeAttribute('data-brand');
+    }
+  }, []);
+
   const setTheme = useCallback(
     (newTheme: Theme) => {
       setThemeState(newTheme);
@@ -78,7 +89,13 @@ export function ThemeProvider({
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setThemeState(stored);
     applyTheme(stored);
-  }, [applyTheme]);
+    applyBrand(brand);
+  }, [applyTheme, applyBrand, brand]);
+
+  // Update brand when prop changes
+  useEffect(() => {
+    applyBrand(brand);
+  }, [brand, applyBrand]);
 
   // Listen for system theme changes
   useEffect(() => {

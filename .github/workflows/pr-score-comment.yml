@@ -1,0 +1,152 @@
+name: "🤖 PR Score Commenter"
+
+# This workflow has privileged access to the repository to safely post comments
+# It is triggered after the "Review & Checks" workflow completes
+on:
+  workflow_run:
+    workflows: ["🤖 PR Review Agent"]
+    types:
+      - completed
+
+permissions:
+  pull-requests: write
+  actions: read
+
+jobs:
+  comment:
+    name: "💬 Post Score"
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion != 'skipped'
+    steps:
+      - name: "📦 Download Results"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: context.event.workflow_run.id,
+            });
+            const matchArtifact = artifacts.data.artifacts.find((artifact) => artifact.name == "pr-results");
+            const download = await github.rest.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            const fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/pr-results.zip', Buffer.from(download.data));
+
+      - name: "📂 Extract Results"
+        run: unzip pr-results.zip -d pr-results
+
+      - name: "💬 Calculate & Post"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const prNumber = fs.readFileSync('pr-results/pr-number.txt', 'utf8').trim();
+
+            const checks = [
+              {
+                name: '🧹 ESLint',
+                weight: 25,
+                exitFile: 'pr-results/lint-exit.txt',
+                outputFile: 'pr-results/lint-output.txt',
+                tip: 'Run `npm run lint` locally to see and fix issues.',
+              },
+              {
+                name: '📘 TypeScript',
+                weight: 25,
+                exitFile: 'pr-results/typecheck-exit.txt',
+                outputFile: 'pr-results/typecheck-output.txt',
+                tip: 'Run `npx tsc --noEmit` locally to see type errors.',
+              },
+              {
+                name: '🏗️ Next.js Build',
+                weight: 25,
+                exitFile: 'pr-results/build-exit.txt',
+                outputFile: 'pr-results/build-output.txt',
+                tip: 'Run `npm run build` locally to reproduce the failure.',
+              },
+              {
+                name: '📚 Storybook Build',
+                weight: 25,
+                exitFile: 'pr-results/storybook-exit.txt',
+                outputFile: 'pr-results/storybook-output.txt',
+                tip: 'Run `npm run build-storybook` locally to debug.',
+              },
+            ];
+
+            const results = checks.map(c => {
+              const exited = fs.readFileSync(c.exitFile, 'utf8').trim() === '0';
+              return { ...c, passed: exited };
+            });
+
+            const score = results.reduce((sum, c) => sum + (c.passed ? c.weight : 0), 0);
+            const scoreEmoji = score === 100 ? '🏆' : score >= 75 ? '👍' : score >= 50 ? '⚠️' : '❌';
+            const scoreBar = '█'.repeat(Math.round(score / 10)) + '░'.repeat(10 - Math.round(score / 10));
+
+            let body = `## ${scoreEmoji} PR Review Agent — Score: ${score}/100\n\n`;
+            body += `\`${scoreBar}\` **${score}%**\n\n`;
+            body += `| Check | Status | Points |\n`;
+            body += `|-------|--------|--------|\n`;
+
+            for (const res of results) {
+              const status = res.passed ? '✅ Passed' : '❌ Failed';
+              const points = res.passed ? `+${res.weight}` : `0`;
+              body += `| ${res.name} | ${status} | ${points} |\n`;
+            }
+
+            const failed = results.filter(r => !r.passed);
+            if (failed.length > 0) {
+              body += `\n### 🔎 Failure Details\n\n`;
+              for (const f of failed) {
+                let output = fs.readFileSync(f.outputFile, 'utf8');
+                const maxLen = 1500;
+                if (output.length > maxLen) output = output.slice(0, maxLen) + '\n... (truncated)';
+                body += `<details>\n<summary>${f.name} — ${f.tip}</summary>\n\n\`\`\`\n${output}\n\`\`\`\n</details>\n\n`;
+              }
+            }
+
+            if (score === 100) {
+              body += `\n### 🎉 All checks passed! Great work!\nThis PR is ready for human review.\n`;
+            } else {
+              body += `\n### 📋 Suggestions\nPlease fix the failing checks above before requesting a review. All checks must pass for a perfect score.\n`;
+            }
+
+            body += `\n---\n<sub>🤖 Automated review by PR Review Agent (Privileged Context)</sub>\n`;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: parseInt(prNumber),
+            });
+
+            const botComment = comments.find(c => c.body && c.body.includes('PR Review Agent — Score:'));
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: parseInt(prNumber),
+                body,
+              });
+            }
+
+            if (score < 100) {
+              console.log(`Failing parent run as score is ${score}/100`);
+              // Note: This job itself doesn't fail the PR check, it just posts the comment.
+              // The original "Review & Checks" workflow should fail if any check failed.
+            }

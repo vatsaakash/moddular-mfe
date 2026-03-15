@@ -1,17 +1,12 @@
-# ============================================================
-# PR Review Agent — Free automated code review with scoring
-# Runs on every pull request targeting main
-# ============================================================
 name: "🤖 PR Review Agent"
 
 on:
-  pull_request_target:
+  pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
-  pull-requests: write
 
 concurrency:
   group: pr-${{ github.event.pull_request.number }}
@@ -19,15 +14,13 @@ concurrency:
 
 jobs:
   review:
-    name: "🔍 Review & Score"
+    name: "🔍 Review & Checks"
     runs-on: ubuntu-latest
 
     steps:
       # ── Setup ─────────────────────────────────────────────
       - name: Checkout PR code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -38,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      # ── Check 1: ESLint ───────────────────────────────────
+      # ── Checks ────────────────────────────────────────────
       - name: "🧹 Lint check"
         id: lint
         continue-on-error: true
@@ -46,11 +39,10 @@ jobs:
           set +e
           OUTPUT=$(npm run lint 2>&1)
           EXIT_CODE=$?
-          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+          echo "$EXIT_CODE" > /tmp/lint-exit.txt
           echo "$OUTPUT" > /tmp/lint-output.txt
-          exit 0
+          exit $EXIT_CODE
 
-      # ── Check 2: TypeScript ──────────────────────────────
       - name: "📘 TypeScript check"
         id: typecheck
         continue-on-error: true
@@ -58,11 +50,10 @@ jobs:
           set +e
           OUTPUT=$(npx tsc --noEmit 2>&1)
           EXIT_CODE=$?
-          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+          echo "$EXIT_CODE" > /tmp/typecheck-exit.txt
           echo "$OUTPUT" > /tmp/typecheck-output.txt
-          exit 0
+          exit $EXIT_CODE
 
-      # ── Check 3: Next.js Build ───────────────────────────
       - name: "🏗️ Next.js build check"
         id: build
         continue-on-error: true
@@ -70,11 +61,10 @@ jobs:
           set +e
           OUTPUT=$(NEXT_PUBLIC_BASE_PATH="/moddular-mfe" npm run build 2>&1)
           EXIT_CODE=$?
-          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+          echo "$EXIT_CODE" > /tmp/build-exit.txt
           echo "$OUTPUT" > /tmp/build-output.txt
-          exit 0
+          exit $EXIT_CODE
 
-      # ── Check 4: Storybook Build ─────────────────────────
       - name: "📚 Storybook build check"
         id: storybook
         continue-on-error: true
@@ -82,136 +72,42 @@ jobs:
           set +e
           OUTPUT=$(npm run build-storybook 2>&1)
           EXIT_CODE=$?
-          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+          echo "$EXIT_CODE" > /tmp/storybook-exit.txt
           echo "$OUTPUT" > /tmp/storybook-output.txt
-          exit 0
+          exit $EXIT_CODE
 
-      # ── Post Review Comment ──────────────────────────────
-      - name: "💬 Post review comment"
-        uses: actions/github-script@v7
-        env:
-          LINT_EXIT: ${{ steps.lint.outputs.exit_code }}
-          TYPECHECK_EXIT: ${{ steps.typecheck.outputs.exit_code }}
-          BUILD_EXIT: ${{ steps.build.outputs.exit_code }}
-          STORYBOOK_EXIT: ${{ steps.storybook.outputs.exit_code }}
+      # ── Export Results ───────────────────────────────────
+      - name: Save PR Number
+        if: always()
+        run: echo "${{ github.event.pull_request.number }}" > /tmp/pr-number.txt
+
+      - name: Upload PR Results
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          script: |
-            const fs = require('fs');
+          name: pr-results
+          path: |
+            /tmp/pr-number.txt
+            /tmp/lint-exit.txt
+            /tmp/lint-output.txt
+            /tmp/typecheck-exit.txt
+            /tmp/typecheck-output.txt
+            /tmp/build-exit.txt
+            /tmp/build-output.txt
+            /tmp/storybook-exit.txt
+            /tmp/storybook-output.txt
+          retention-days: 1
 
-            const checks = [
-              {
-                name: '🧹 ESLint',
-                passed: process.env.LINT_EXIT === '0',
-                outputFile: '/tmp/lint-output.txt',
-                weight: 25,
-                tip: 'Run `npm run lint` locally to see and fix issues.',
-              },
-              {
-                name: '📘 TypeScript',
-                passed: process.env.TYPECHECK_EXIT === '0',
-                outputFile: '/tmp/typecheck-output.txt',
-                weight: 25,
-                tip: 'Run `npx tsc --noEmit` locally to see type errors.',
-              },
-              {
-                name: '🏗️ Next.js Build',
-                passed: process.env.BUILD_EXIT === '0',
-                outputFile: '/tmp/build-output.txt',
-                weight: 25,
-                tip: 'Run `npm run build` locally to reproduce the failure.',
-              },
-              {
-                name: '📚 Storybook Build',
-                passed: process.env.STORYBOOK_EXIT === '0',
-                outputFile: '/tmp/storybook-output.txt',
-                weight: 25,
-                tip: 'Run `npm run build-storybook` locally to debug.',
-              },
-            ];
+      # ── Final Status ─────────────────────────────────────
+      - name: "Final check status"
+        if: always()
+        run: |
+          LINT=$(cat /tmp/lint-exit.txt || echo "1")
+          TYPE=$(cat /tmp/typecheck-exit.txt || echo "1")
+          BUILD=$(cat /tmp/build-exit.txt || echo "1")
+          STORY=$(cat /tmp/storybook-exit.txt || echo "1")
+          if [ "$LINT" -ne 0 ] || [ "$TYPE" -ne 0 ] || [ "$BUILD" -ne 0 ] || [ "$STORY" -ne 0 ]; then
+            echo "One or more checks failed."
+            exit 1
+          fi
 
-            const score = checks.reduce((sum, c) => sum + (c.passed ? c.weight : 0), 0);
-
-            const scoreEmoji =
-              score === 100 ? '🏆' :
-              score >= 75  ? '👍' :
-              score >= 50  ? '⚠️' :
-              '❌';
-
-            const scoreBar =
-              '█'.repeat(Math.round(score / 10)) +
-              '░'.repeat(10 - Math.round(score / 10));
-
-            let body = `## ${scoreEmoji} PR Review Agent — Score: ${score}/100\n\n`;
-            body += `\`${scoreBar}\` **${score}%**\n\n`;
-            body += `| Check | Status | Points |\n`;
-            body += `|-------|--------|--------|\n`;
-
-            for (const check of checks) {
-              const status = check.passed ? '✅ Passed' : '❌ Failed';
-              const points = check.passed ? `+${check.weight}` : `0`;
-              body += `| ${check.name} | ${status} | ${points} |\n`;
-            }
-
-            const failedChecks = checks.filter(c => !c.passed);
-
-            if (failedChecks.length > 0) {
-              body += `\n### 🔎 Failure Details\n\n`;
-
-              for (const check of failedChecks) {
-                let output = '';
-
-                try {
-                  output = fs.readFileSync(check.outputFile, 'utf8');
-                } catch (e) {
-                  output = 'Could not read output.';
-                }
-
-                const maxLen = 1500;
-                if (output.length > maxLen) {
-                  output = output.slice(0, maxLen) + '\n... (truncated)';
-                }
-
-                body += `<details>\n<summary>${check.name} — ${check.tip}</summary>\n\n\`\`\`\n${output}\n\`\`\`\n</details>\n\n`;
-              }
-            }
-
-            if (score === 100) {
-              body += `\n### 🎉 All checks passed! Great work!\n`;
-              body += `This PR is ready for human review.\n`;
-            } else {
-              body += `\n### 📋 Suggestions\n`;
-              body += `Please fix the failing checks above before requesting a review.\n`;
-              body += `All checks must pass for a perfect score.\n`;
-            }
-
-            body += `\n---\n<sub>🤖 Automated review by PR Review Agent</sub>\n`;
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            const botComment = comments.find(c =>
-              c.body && c.body.includes('PR Review Agent — Score:')
-            );
-
-            if (botComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body,
-              });
-            }
-
-            if (score < 100) {
-              core.setFailed(`PR score: ${score}/100. Fix failing checks.`);
-            }

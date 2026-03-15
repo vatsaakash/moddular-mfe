@@ -1,57 +1,45 @@
-# ============================================================
 # CodeRabbit Configuration
-# Free AI-powered code review for open-source projects
-# Install: https://github.com/apps/coderabbitai
-# ============================================================
+# Documentation: https://docs.coderabbit.ai/
 
-language: en-US
+language: "en-US"
 
 reviews:
-  # Enable auto-review on every PR
+  profile: "assertive"
   auto_review:
     enabled: true
-    # Review drafts too
     drafts: false
+  
+  # Global instructions for the AI reviewer
+  instructions: |
+    You are reviewing 'moddular-mfe', a premium React/Next.js micro-frontend component library. 
+    Follow the standards defined in `CONTRIBUTING.md`.
 
-  # Review profile: assertive gives more detailed feedback
-  profile: assertive
+    **Core Review Checklist:**
+    1. **Commit Messages**: Verify PR follows Conventional Commits (e.g., `feat(scope): desc`).
+    2. **Accessibility (A11y)**: Must follow WAI-ARIA Authoring Practices. Every interaction needs keyboard support and correct `aria-*` attributes (`aria-expanded`, `aria-controls`, etc.).
+    3. **File Structure**: New components must have exactly:
+       - `ComponentName.tsx` (Component logic)
+       - `ComponentName.module.scss` (Styles)
+       - `ComponentName.stories.tsx` (Storybook)
+       - `index.ts` (Barrel export)
+    4. **SCSS Rules**: 
+       - ❌ NO hardcoded colors (e.g., `#fff`). Use `var(--color-...)`.
+       - ❌ NO magic numbers for spacing/radius. Use `$space-...` and `$radius-...`.
+    5. **Storybook**: Ensure every prop is documented in `argTypes` and variant stories are provided.
+    6. **ThemeProvider**: Components must respect `theme` and `brand` props.
 
-  # Request changes on issues (not just comments)
-  request_changes_workflow: true
-
-  # Collapse walkthrough in PR comment to keep it clean
-  collapse_walkthrough: true
-
-  # High-level summary for every PR
-  high_level_summary: true
-
-  # Poem at the end of the review (fun touch)
-  poem: true
-
-  # Path-based review instructions
+  # Path-specific overrides
   path_instructions:
-    - path: "src/**/*.tsx"
+    - path: "src/components/**/*.tsx"
       instructions: |
-        Review React component for:
-        - Proper TypeScript types (no `any`)
-        - Accessibility (aria attributes, keyboard nav)
-        - Responsive design
-        - Theme support (light/dark)
-        - SCSS module usage with CSS custom properties
-
-    - path: "src/**/*.scss"
-      instructions: |
-        Review SCSS for:
-        - Use of CSS custom properties (no hardcoded colors)
-        - Responsive units (rem, em, %)
-        - BEM naming convention
-
-    - path: "src/**/*.stories.tsx"
-      instructions: |
-        Review Storybook story for:
-        - All props exposed as controls
-        - Multiple variants shown
-        - Accessibility addon usage
+        Check for proper TypeScript typing of props. 
+        Ensure `React.memo` or `useMemo` are used only when there is a clear performance benefit.
+    
+    - path: "src/components/**/*.module.scss"
+      instructions: "Check for responsive design using `@include respond-to`. Verify the absence of global leaks."
+    
+    - path: ".github/workflows/*.yml"
+      instructions: "Verify the secure split-workflow pattern for PR scoring (artifacts + separate commenter job)."
 
 chat:
-  auto_reply: true
+  enabled: true

@@ -28,6 +28,7 @@
 | **Ratings**   | Interactive star/heart/circle rating input      | sm, md, lg + 3 icon types   | 🟢 Done | [Akash Ranjan](https://github.com/vatsaakash) |
 | **ProfileCard**| Social profile card with stats and platform icons| split, full                 | 🟢 Done | [Akash Ranjan](https://github.com/vatsaakash) |
 | **Toast**     | Notification message system                     | -                           | ⏳ Pending | [Fudail Mohammed Zafar](https://github.com/fudailzafar) |
+| **HeroBanner**| Premium hero section with floating cards       | left, right, content-only   | 🟢 Done | [Akash Ranjan](https://github.com/vatsaakash) |
 | **Card Carousel**| Horizontal scrollable card container         | -                           | ⏳ Pending | [Fudail Mohammed Zafar](https://github.com/fudailzafar) |
 
 > More components coming soon! Contributions welcome.
@@ -219,6 +220,20 @@ const items = [
 | `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `readonly` | `boolean` | `false` | Disable user interaction |
 | `theme` | `'light'\|'dark'` | `-` | Component-level theme override |
+
+### Component API: HeroBanner
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `title` | `string\|ReactNode` | `-` | Main heading text or custom component |
+| `badge` | `string` | `-` | Text displayed above the title |
+| `description` | `string` | `-` | Supporting paragraph text |
+| `ctaText` | `string` | `-` | Text for the primary action button |
+| `ctaHref` | `string` | `'#'` | URL for the primary action |
+| `imageSrc` | `string` | `-` | Primary hero image source |
+| `imagePosition`| `'left'\|'right'` | `'right'` | Alignment of the hero image |
+| `floatingCards` | `FloatingCard[]` | `[]` | Array of overlay status cards |
+| `blobShape` | `PredefinedBlobShape \| string` | `'organic'` | Shape of the blob: `organic`, `circle`, `square`, `pill`, `leaf` or custom CSS string |
 
 ---
 

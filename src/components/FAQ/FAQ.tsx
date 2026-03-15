@@ -100,9 +100,10 @@ export function FAQ({
               role="region"
               aria-labelledby={headingId}
               className={styles.panel}
-              hidden={!isOpen}
             >
-              <div className={styles.answer}>{item.answer}</div>
+              <div className={styles.answer} aria-hidden={!isOpen}>
+                <div>{item.answer}</div>
+              </div>
             </div>
           </div>
         );

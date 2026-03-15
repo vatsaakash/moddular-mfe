@@ -15,6 +15,10 @@
   @include container(900px);
 }
 
+.docsContainer {
+  @include container(1200px);
+}
+
 /* ── Hero ─────────────────────────────────────────────────── */
 
 .hero {
@@ -196,6 +200,109 @@
   flex: 1;
 }
 
+.componentsLayout {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xl;
+  margin-top: $space-xl;
+
+  @include respond-to(md) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.mobileSidebarToggle {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  width: 100%;
+  padding: $space-md;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  color: var(--color-text);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  @include smooth-transition(background-color, border-color);
+  @include focus-ring;
+
+  &:hover {
+    background: var(--color-surface-raised);
+  }
+
+  svg {
+    color: var(--color-text-secondary);
+  }
+
+  @include respond-to(md) {
+    display: none;
+  }
+}
+
+.sidebar {
+  display: none;
+
+  &.open {
+    display: block;
+    margin-top: -$space-base; /* Pull up slightly closer to toggle */
+  }
+
+  @include respond-to(md) {
+    display: block;
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: $space-2xl;
+    height: calc(100vh - 4rem);
+    align-self: flex-start;
+  }
+}
+
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+  background: var(--color-surface);
+  padding: $space-sm;
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+
+  @include respond-to(md) {
+    padding: 0;
+    background: transparent;
+    border: none;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: $space-md; /* Space for scrollbar if it appears */
+  }
+}
+
+.sidebarLink {
+  white-space: nowrap;
+  padding: $space-sm $space-md;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  border-radius: $radius-md;
+  flex-shrink: 0;
+  @include smooth-transition(background-color, color);
+  @include focus-ring;
+
+  &:hover {
+    background: var(--color-surface-raised);
+    color: var(--color-primary);
+  }
+}
+
+.componentsContent {
+  flex: 1;
+  min-width: 0;
+}
+
 .demoBlock {
   margin-bottom: $space-2xl;
   padding: $space-xl;
@@ -369,6 +476,7 @@
     .stepNumber {
       transform: scale(1.1);
       background: var(--color-primary);
+      color: var(--color-primary-text);
       box-shadow: 0 0 15px var(--color-primary);
     }
   }

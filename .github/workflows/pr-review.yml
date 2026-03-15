@@ -5,13 +5,17 @@
 name: "🤖 PR Review Agent"
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
     types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
   pull-requests: write
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   review:
@@ -20,8 +24,10 @@ jobs:
 
     steps:
       # ── Setup ─────────────────────────────────────────────
-      - name: Checkout code
+      - name: Checkout PR code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,7 +47,6 @@ jobs:
           OUTPUT=$(npm run lint 2>&1)
           EXIT_CODE=$?
           echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
-          # Save output to file (multi-line safe)
           echo "$OUTPUT" > /tmp/lint-output.txt
           exit 0
 
@@ -93,7 +98,6 @@ jobs:
           script: |
             const fs = require('fs');
 
-            // ── Read results ────────────────────────────
             const checks = [
               {
                 name: '🧹 ESLint',
@@ -125,17 +129,17 @@ jobs:
               },
             ];
 
-            // ── Compute score ───────────────────────────
             const score = checks.reduce((sum, c) => sum + (c.passed ? c.weight : 0), 0);
 
-            // ── Build comment body ──────────────────────
             const scoreEmoji =
               score === 100 ? '🏆' :
               score >= 75  ? '👍' :
               score >= 50  ? '⚠️' :
               '❌';
 
-            const scoreBar = '█'.repeat(Math.round(score / 10)) + '░'.repeat(10 - Math.round(score / 10));
+            const scoreBar =
+              '█'.repeat(Math.round(score / 10)) +
+              '░'.repeat(10 - Math.round(score / 10));
 
             let body = `## ${scoreEmoji} PR Review Agent — Score: ${score}/100\n\n`;
             body += `\`${scoreBar}\` **${score}%**\n\n`;
@@ -148,27 +152,29 @@ jobs:
               body += `| ${check.name} | ${status} | ${points} |\n`;
             }
 
-            // ── Add error details for failing checks ────
             const failedChecks = checks.filter(c => !c.passed);
+
             if (failedChecks.length > 0) {
               body += `\n### 🔎 Failure Details\n\n`;
+
               for (const check of failedChecks) {
                 let output = '';
+
                 try {
                   output = fs.readFileSync(check.outputFile, 'utf8');
                 } catch (e) {
                   output = 'Could not read output.';
                 }
-                // Truncate long outputs
+
                 const maxLen = 1500;
                 if (output.length > maxLen) {
                   output = output.slice(0, maxLen) + '\n... (truncated)';
                 }
+
                 body += `<details>\n<summary>${check.name} — ${check.tip}</summary>\n\n\`\`\`\n${output}\n\`\`\`\n</details>\n\n`;
               }
             }
 
-            // ── Summary & suggestions ───────────────────
             if (score === 100) {
               body += `\n### 🎉 All checks passed! Great work!\n`;
               body += `This PR is ready for human review.\n`;
@@ -180,7 +186,6 @@ jobs:
 
             body += `\n---\n<sub>🤖 Automated review by PR Review Agent</sub>\n`;
 
-            // ── Post or update comment ──────────────────
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -207,7 +212,6 @@ jobs:
               });
             }
 
-            // ── Fail the workflow if score < 100 ────────
             if (score < 100) {
               core.setFailed(`PR score: ${score}/100. Fix failing checks.`);
             }

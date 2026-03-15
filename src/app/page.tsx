@@ -6,7 +6,9 @@ import { FAQ } from '@/components/FAQ';
 import { Accordion } from '@/components/Accordion';
 import { Ratings } from '@/components/Ratings';
 import { ProfileCard } from '@/components/ProfileCard';
+import { HeroBanner } from '@/components/HeroBanner';
 import styles from './page.module.scss';
+import { Activity, BarChart, Users, Zap } from 'lucide-react';
 
 const faqItems = [
   {
@@ -74,12 +76,15 @@ const LocalThemeToggle = ({ value, onChange }: { value: LocalTheme, onChange: (v
 export default function Home() {
   const { theme, setTheme, resolvedTheme } = useTheme();
 
+  const [heroBannerTheme, setHeroBannerTheme] = useState<LocalTheme>('inherit');
   const [faqTheme, setFaqTheme] = useState<LocalTheme>('inherit');
   const [accordionTheme, setAccordionTheme] = useState<LocalTheme>('inherit');
   const [ratingsTheme, setRatingsTheme] = useState<LocalTheme>('inherit');
   const [profileTheme, setProfileTheme] = useState<LocalTheme>('inherit');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const getThemeProp = (val: LocalTheme): 'light' | 'dark' | undefined =>
+    val === 'inherit' ? undefined : val;
   return (
     <main className={styles.main}>
       {/* Hero */}
@@ -151,9 +156,9 @@ export default function Home() {
 
           <div className={styles.componentsLayout}>
             {/* Mobile Sidebar Toggle */}
-            <button 
+            <button
               type="button"
-              className={styles.mobileSidebarToggle} 
+              className={styles.mobileSidebarToggle}
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               aria-expanded={isSidebarOpen}
               aria-controls="docs-sidebar"
@@ -176,8 +181,8 @@ export default function Home() {
             </button>
 
             <aside id="docs-sidebar" className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ''}`}>
-              <nav 
-                className={styles.sidebarNav} 
+              <nav
+                className={styles.sidebarNav}
                 onClick={(e) => {
                   if ((e.target as HTMLElement).tagName.toLowerCase() === 'a') {
                     setIsSidebarOpen(false);
@@ -189,6 +194,7 @@ export default function Home() {
                   }
                 }}
               >
+                <a href="#demo-herobanner" className={styles.sidebarLink}>HeroBanner</a>
                 <a href="#demo-faq" className={styles.sidebarLink}>FAQ</a>
                 <a href="#demo-accordion" className={styles.sidebarLink}>Accordion</a>
                 <a href="#demo-ratings" className={styles.sidebarLink}>Ratings</a>
@@ -197,6 +203,61 @@ export default function Home() {
             </aside>
 
             <div className={styles.componentsContent}>
+              {/* HeroBanner Demo */}
+              <div id="demo-herobanner" className={styles.demoBlock}>
+                <div className={styles.demoHeader}>
+                  <div>
+                    <h3 className={styles.demoTitle}>HeroBanner</h3>
+                    <p className={styles.demoVariant}>Premium Section</p>
+                  </div>
+                  <LocalThemeToggle value={heroBannerTheme} onChange={setHeroBannerTheme} />
+                </div>
+                <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--color-border)' }}>
+                  <HeroBanner
+                    badge="Welcome To Techsauq"
+                    title={
+                      <>
+                        Transforming <br />
+                        Ideas into a <br />
+                        <span>Digital world</span>
+                      </>
+                    }
+                    description="Crafting intuitive designs that captivate and inspire. Building robust websites that elevate brands online. Empowering businesses with innovative digital solutions."
+                    ctaText="Book a Consultation"
+                    imageSrc="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop"
+                    imageAlt="Team working together"
+                    theme={getThemeProp(heroBannerTheme)}
+                    blobShape="50% 50% 50% 50% / 50% 50% 50% 50%"
+                    blobAnimationDuration="25s"
+                    floatingCards={[
+                      {
+                        icon: <Activity />,
+                        label: 'Pricing',
+                        value: '12%',
+                        trend: { value: '96% Quality', isUp: true }
+                      },
+                      {
+                        icon: <Zap />,
+                        label: 'Services',
+                        value: 'Best',
+                      },
+                      {
+                        icon: <Users />,
+                        label: 'Clients',
+                        value: '500+',
+                        trend: { value: 'Happy', isUp: true }
+                      },
+                      {
+                        icon: <BarChart />,
+                        label: 'Activity',
+                        value: '96%',
+                        trend: { value: '+12%', isUp: true }
+                      }
+                    ]}
+                  />
+                </div>
+              </div>
+
               {/* FAQ Demo */}
               <div id="demo-faq" className={styles.demoBlock}>
                 <div className={styles.demoHeader}>
@@ -210,7 +271,7 @@ export default function Home() {
                   items={faqItems}
                   variant="card"
                   allowMultiple
-                  theme={faqTheme === 'inherit' ? undefined : faqTheme}
+                  theme={getThemeProp(faqTheme)}
                 />
               </div>
 
@@ -227,7 +288,7 @@ export default function Home() {
                   items={accordionItems}
                   variant="separated"
                   defaultOpen={[0]}
-                  theme={accordionTheme === 'inherit' ? undefined : accordionTheme}
+                  theme={getThemeProp(accordionTheme)}
                 />
               </div>
 
@@ -248,7 +309,7 @@ export default function Home() {
                       defaultValue={3}
                       showLabel
                       size="lg"
-                      theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
+                      theme={getThemeProp(ratingsTheme)}
                     />
                   </div>
                   <div>
@@ -260,7 +321,7 @@ export default function Home() {
                       readonly
                       showLabel
                       size="lg"
-                      theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
+                      theme={getThemeProp(ratingsTheme)}
                     />
                   </div>
                   <div>
@@ -271,7 +332,7 @@ export default function Home() {
                       icon="circle"
                       showLabel
                       size="sm"
-                      theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
+                      theme={getThemeProp(ratingsTheme)}
                     />
                   </div>
                 </div>
@@ -295,7 +356,7 @@ export default function Home() {
                     isVerified
                     // stats={{ followers: '1k+', posts: 24, following: 400 }}
                     profileUrl="https://github.com/vatsaakash"
-                    theme={profileTheme === 'inherit' ? undefined : profileTheme}
+                    theme={getThemeProp(profileTheme)}
                   />
                   <ProfileCard
                     name="Akash Ranjan"
@@ -305,7 +366,7 @@ export default function Home() {
                     isVerified
                     stats={{ followers: '2k+', posts: 56, following: 500 }}
                     profileUrl="https://www.linkedin.com/in/vatsaakash/"
-                    theme={profileTheme === 'inherit' ? undefined : profileTheme}
+                    theme={getThemeProp(profileTheme)}
                   />
                 </div>
               </div>

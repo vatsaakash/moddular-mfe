@@ -55,28 +55,29 @@ const accordionItems = [
   },
 ];
 
+type LocalTheme = 'inherit' | 'light' | 'dark';
+
+const LocalThemeToggle = ({ value, onChange }: { value: LocalTheme, onChange: (val: LocalTheme) => void }) => (
+  <div className={styles.localThemeToggle}>
+    {(['inherit', 'light', 'dark'] as const).map(t => (
+      <button
+        key={t}
+        onClick={() => onChange(t)}
+        className={`${styles.localThemeBtn} ${value === t ? styles.active : ''}`}
+      >
+        {t}
+      </button>
+    ))}
+  </div>
+);
+
 export default function Home() {
   const { theme, setTheme, resolvedTheme } = useTheme();
 
-  type LocalTheme = 'inherit' | 'light' | 'dark';
   const [faqTheme, setFaqTheme] = useState<LocalTheme>('inherit');
   const [accordionTheme, setAccordionTheme] = useState<LocalTheme>('inherit');
   const [ratingsTheme, setRatingsTheme] = useState<LocalTheme>('inherit');
   const [profileTheme, setProfileTheme] = useState<LocalTheme>('inherit');
-
-  const LocalThemeToggle = ({ value, onChange }: { value: LocalTheme, onChange: (val: LocalTheme) => void }) => (
-    <div className={styles.localThemeToggle}>
-      {(['inherit', 'light', 'dark'] as const).map(t => (
-        <button
-          key={t}
-          onClick={() => onChange(t)}
-          className={`${styles.localThemeBtn} ${value === t ? styles.active : ''}`}
-        >
-          {t}
-        </button>
-      ))}
-    </div>
-  );
 
   return (
     <main className={styles.main}>

@@ -1,0 +1,57 @@
+# ============================================================
+# CodeRabbit Configuration
+# Free AI-powered code review for open-source projects
+# Install: https://github.com/apps/coderabbitai
+# ============================================================
+
+language: en-US
+
+reviews:
+  # Enable auto-review on every PR
+  auto_review:
+    enabled: true
+    # Review drafts too
+    drafts: false
+
+  # Review profile: assertive gives more detailed feedback
+  profile: assertive
+
+  # Request changes on issues (not just comments)
+  request_changes_workflow: true
+
+  # Collapse walkthrough in PR comment to keep it clean
+  collapse_walkthrough: true
+
+  # High-level summary for every PR
+  high_level_summary: true
+
+  # Poem at the end of the review (fun touch)
+  poem: true
+
+  # Path-based review instructions
+  path_instructions:
+    - path: "src/**/*.tsx"
+      instructions: |
+        Review React component for:
+        - Proper TypeScript types (no `any`)
+        - Accessibility (aria attributes, keyboard nav)
+        - Responsive design
+        - Theme support (light/dark)
+        - SCSS module usage with CSS custom properties
+
+    - path: "src/**/*.scss"
+      instructions: |
+        Review SCSS for:
+        - Use of CSS custom properties (no hardcoded colors)
+        - Responsive units (rem, em, %)
+        - BEM naming convention
+
+    - path: "src/**/*.stories.tsx"
+      instructions: |
+        Review Storybook story for:
+        - All props exposed as controls
+        - Multiple variants shown
+        - Accessibility addon usage
+
+chat:
+  auto_reply: true

@@ -243,7 +243,8 @@ src/
 ├── components/             # MFE components
 │   ├── FAQ/
 │   ├── Accordion/
-│   └── Ratings/
+│   ├── Ratings/
+│   └── Toast/
 ├── providers/
 │   └── ThemeProvider.tsx    # Dark / Light / System theme context
 └── styles/                 # Global SCSS infrastructure

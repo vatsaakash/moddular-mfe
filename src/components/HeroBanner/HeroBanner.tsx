@@ -100,7 +100,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
 }) => {
   const rootClasses = [
     styles.hero,
-    styles[`image-${imagePosition}`],
+    imageSrc ? styles[`image-${imagePosition}`] : styles['content-only'],
     className
   ].filter(Boolean).join(' ');
 
@@ -116,7 +116,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
       <div className={styles.container}>
         <div className={styles.content}>
           {badge && (
-            <span className={styles.badge} aria-label="Welcome message">
+            <span className={styles.badge}>
               {badge}
             </span>
           )}
@@ -142,20 +142,21 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
         </div>
 
         {imageSrc && (
-          <div className={styles.visual} aria-hidden="true">
+          <div className={styles.visual}>
             <div className={styles.imageWrapper}>
               <div 
                 className={styles.blob} 
                 data-organic={blobShape === 'organic' || !blobShape}
+                aria-hidden="true"
               />
               <img src={imageSrc} alt={imageAlt} className={styles.image} />
               
               {floatingCards.map((card, index) => (
                 <div 
                   key={index} 
-                  className={`${styles.floatingCard} ${styles[`card-${index + 1}`]}`}
+                  className={`${styles.floatingCard} ${styles[`card-${(index % 4) + 1}`]}`}
                 >
-                  {card.icon && <div className={styles.cardIcon}>{card.icon}</div>}
+                  {card.icon && <div className={styles.cardIcon} aria-hidden="true">{card.icon}</div>}
                   <div className={styles.cardContent}>
                     <div className={styles.cardValue}>{card.value}</div>
                     <div className={styles.cardLabel}>{card.label}</div>

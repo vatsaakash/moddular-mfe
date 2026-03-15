@@ -225,15 +225,19 @@ const items = [
 
 | Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `title` | `string\|ReactNode` | `-` | Main heading text or custom component |
+| `title` | `string \| ReactNode` | `-` | Main heading text or custom component |
 | `badge` | `string` | `-` | Text displayed above the title |
 | `description` | `string` | `-` | Supporting paragraph text |
 | `ctaText` | `string` | `-` | Text for the primary action button |
 | `ctaHref` | `string` | `'#'` | URL for the primary action |
 | `imageSrc` | `string` | `-` | Primary hero image source |
-| `imagePosition`| `'left'\|'right'` | `'right'` | Alignment of the hero image |
-| `floatingCards` | `FloatingCard[]` | `[]` | Array of overlay status cards |
+| `imageAlt` | `string` | `""` | Alt text for the hero image |
+| `imagePosition`| `'left' \| 'right'` | `'right'` | Alignment of the hero image |
+| `floatingCards` | `FloatingCardData[]` | `[]` | Array of overlay status cards |
 | `blobShape` | `PredefinedBlobShape \| string` | `'organic'` | Shape of the blob: `organic`, `circle`, `square`, `pill`, `leaf` or custom CSS string |
+| `blobAnimationDuration` | `string` | `"20s"` | Duration for the blob bounce animation |
+| `className` | `string` | `""` | Additional CSS classes |
+| `theme` | `'light' \| 'dark'` | `undefined` | Component level theme override |
 
 ---
 

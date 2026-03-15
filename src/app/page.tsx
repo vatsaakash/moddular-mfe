@@ -83,8 +83,8 @@ export default function Home() {
   const [profileTheme, setProfileTheme] = useState<LocalTheme>('inherit');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const getThemeProp = (val: LocalTheme) => val === 'inherit' ? undefined : val as 'light' | 'dark';
-
+  const getThemeProp = (val: LocalTheme): 'light' | 'dark' | undefined =>
+    val === 'inherit' ? undefined : val;
   return (
     <main className={styles.main}>
       {/* Hero */}

@@ -15,6 +15,7 @@
 
 .container {
   @include container;
+
   display: flex;
   flex-direction: column;
   gap: $space-2xl;
@@ -145,6 +146,10 @@
     animation: blob-bounce var(--blob-animation-duration, 20s) infinite linear,
                blob-wobble var(--blob-animation-duration, 20s) infinite linear;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+  }
 }
 
 @keyframes blob-bounce {
@@ -171,6 +176,7 @@
 // Floating Cards
 .floatingCard {
   @include glass-effect(16px);
+
   position: absolute;
   padding: $space-md;
   display: flex;
@@ -180,12 +186,19 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: $shadow-lg;
   z-index: 2;
+
   @include smooth-transition;
+
   animation: float-up-down 6s ease-in-out infinite;
 
   &:hover {
     transform: scale(1.05);
     background-color: var(--color-surface);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    transition: none !important;
   }
 }
 

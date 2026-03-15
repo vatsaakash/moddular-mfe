@@ -92,17 +92,19 @@
   }
 }
 
+// Default transition variables for consumer override
+$transition-duration: 300ms !default;
+$transition-easing: cubic-bezier(0.2, 0.8, 0.2, 1) !default;
+
 // ── Smooth Transition ───────────────────────────────────────
 @mixin smooth-transition($properties...) {
-  $duration: $transition-base;
-
   @if list.length($properties) == 0 {
     $properties: all;
   }
 
   transition-property: $properties;
-  transition-duration: $duration;
-  transition-timing-function: ease;
+  transition-duration: $transition-duration;
+  transition-timing-function: $transition-easing;
 
   @include reduced-motion {
     transition-duration: 0.01ms;

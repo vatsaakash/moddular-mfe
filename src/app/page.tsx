@@ -78,6 +78,7 @@ export default function Home() {
   const [accordionTheme, setAccordionTheme] = useState<LocalTheme>('inherit');
   const [ratingsTheme, setRatingsTheme] = useState<LocalTheme>('inherit');
   const [profileTheme, setProfileTheme] = useState<LocalTheme>('inherit');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <main className={styles.main}>
@@ -134,130 +135,180 @@ export default function Home() {
               </button>
             ))}
           </div>
-          <p className={styles.currentTheme}>
-            Active: <strong>{resolvedTheme}</strong>
+          <p className={styles.currentTheme} suppressHydrationWarning>
+            Active: <strong suppressHydrationWarning>{resolvedTheme}</strong>
           </p>
         </div>
       </section>
 
       {/* Components Demo */}
       <section id="components" className={styles.components}>
-        <div className={styles.container}>
+        <div className={styles.docsContainer}>
           <h2 className={styles.sectionTitle}>Components</h2>
           <p className={styles.sectionDesc}>
             Interactive demos — try toggling themes to see live adaptation.
           </p>
 
-          {/* FAQ Demo */}
-          <div className={styles.demoBlock}>
-            <div className={styles.demoHeader}>
-              <div>
-                <h3 className={styles.demoTitle}>FAQ</h3>
-                <p className={styles.demoVariant}>Variant: card</p>
-              </div>
-              <LocalThemeToggle value={faqTheme} onChange={setFaqTheme} />
-            </div>
-            <FAQ
-              items={faqItems}
-              variant="card"
-              allowMultiple
-              theme={faqTheme === 'inherit' ? undefined : faqTheme}
-            />
-          </div>
+          <div className={styles.componentsLayout}>
+            {/* Mobile Sidebar Toggle */}
+            <button 
+              type="button"
+              className={styles.mobileSidebarToggle} 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              aria-expanded={isSidebarOpen}
+              aria-controls="docs-sidebar"
+            >
+              <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {isSidebarOpen ? (
+                  <>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </>
+                ) : (
+                  <>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                  </>
+                )}
+              </svg>
+              <span>{isSidebarOpen ? 'Close Menu' : 'Components Menu'}</span>
+            </button>
 
-          {/* Accordion Demo */}
-          <div className={styles.demoBlock}>
-            <div className={styles.demoHeader}>
-              <div>
-                <h3 className={styles.demoTitle}>Accordion</h3>
-                <p className={styles.demoVariant}>Variant: separated</p>
-              </div>
-              <LocalThemeToggle value={accordionTheme} onChange={setAccordionTheme} />
-            </div>
-            <Accordion
-              items={accordionItems}
-              variant="separated"
-              defaultOpen={[0]}
-              theme={accordionTheme === 'inherit' ? undefined : accordionTheme}
-            />
-          </div>
+            <aside id="docs-sidebar" className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ''}`}>
+              <nav 
+                className={styles.sidebarNav} 
+                onClick={(e) => {
+                  if ((e.target as HTMLElement).tagName.toLowerCase() === 'a') {
+                    setIsSidebarOpen(false);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && (e.target as HTMLElement).tagName.toLowerCase() === 'a') {
+                    setIsSidebarOpen(false);
+                  }
+                }}
+              >
+                <a href="#demo-faq" className={styles.sidebarLink}>FAQ</a>
+                <a href="#demo-accordion" className={styles.sidebarLink}>Accordion</a>
+                <a href="#demo-ratings" className={styles.sidebarLink}>Ratings</a>
+                <a href="#demo-profilecard" className={styles.sidebarLink}>ProfileCard</a>
+              </nav>
+            </aside>
 
-          {/* Ratings Demo */}
-          <div className={styles.demoBlock}>
-            <div className={styles.demoHeader}>
-              <div>
-                <h3 className={styles.demoTitle}>Ratings</h3>
-                <p className={styles.demoVariant}>Sizes & Icons</p>
-              </div>
-              <LocalThemeToggle value={ratingsTheme} onChange={setRatingsTheme} />
-            </div>
-            <div className={styles.ratingsRow}>
-              <div>
-                <p className={styles.demoVariant}>Star (interactive)</p>
-                <Ratings
-                  max={5}
-                  defaultValue={3}
-                  showLabel
-                  size="lg"
-                  theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
+            <div className={styles.componentsContent}>
+              {/* FAQ Demo */}
+              <div id="demo-faq" className={styles.demoBlock}>
+                <div className={styles.demoHeader}>
+                  <div>
+                    <h3 className={styles.demoTitle}>FAQ</h3>
+                    <p className={styles.demoVariant}>Variant: card</p>
+                  </div>
+                  <LocalThemeToggle value={faqTheme} onChange={setFaqTheme} />
+                </div>
+                <FAQ
+                  items={faqItems}
+                  variant="card"
+                  allowMultiple
+                  theme={faqTheme === 'inherit' ? undefined : faqTheme}
                 />
               </div>
-              <div>
-                <p className={styles.demoVariant}>Heart (readonly)</p>
-                <Ratings
-                  max={5}
-                  value={4}
-                  icon="heart"
-                  readonly
-                  showLabel
-                  size="lg"
-                  theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
-                />
-              </div>
-              <div>
-                <p className={styles.demoVariant}>Circle (small)</p>
-                <Ratings
-                  max={5}
-                  defaultValue={2}
-                  icon="circle"
-                  showLabel
-                  size="sm"
-                  theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
-                />
-              </div>
-            </div>
-          </div>
 
-          {/* ProfileCard Demo */}
-          <div className={styles.demoBlock}>
-            <div className={styles.demoHeader}>
-              <div>
-                <h3 className={styles.demoTitle}>ProfileCard</h3>
-                <p className={styles.demoVariant}>Social Media Integration</p>
+              {/* Accordion Demo */}
+              <div id="demo-accordion" className={styles.demoBlock}>
+                <div className={styles.demoHeader}>
+                  <div>
+                    <h3 className={styles.demoTitle}>Accordion</h3>
+                    <p className={styles.demoVariant}>Variant: separated</p>
+                  </div>
+                  <LocalThemeToggle value={accordionTheme} onChange={setAccordionTheme} />
+                </div>
+                <Accordion
+                  items={accordionItems}
+                  variant="separated"
+                  defaultOpen={[0]}
+                  theme={accordionTheme === 'inherit' ? undefined : accordionTheme}
+                />
               </div>
-              <LocalThemeToggle value={profileTheme} onChange={setProfileTheme} />
-            </div>
-            <div className={styles.profileRow}>
-              <ProfileCard
-                // name="Akash Vatsa"
-                // bio="Entrepreneur @ ICW Technologies. Building Moddular MFE."
-                // image="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop"
-                variant="full"
-                isVerified
-                // stats={{ followers: '1k+', posts: 24, following: 400 }}
-                profileUrl="https://github.com/vatsaakash"
-              // theme={profileTheme === 'inherit' ? undefined : profileTheme}
-              />
-              <ProfileCard
-                name="Akash Vatsa"
-                bio="Full Stack Developer focused on React & Web Performance. Founder of ICW Technologies."
-                image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop"
-                variant="split"
-                isVerified
-                stats={{ followers: '2k+', posts: 56, following: 500 }}
-                profileUrl="https://www.linkedin.com/in/vatsaakash/"
-                theme={profileTheme === 'inherit' ? undefined : profileTheme}
-              />
+
+              {/* Ratings Demo */}
+              <div id="demo-ratings" className={styles.demoBlock}>
+                <div className={styles.demoHeader}>
+                  <div>
+                    <h3 className={styles.demoTitle}>Ratings</h3>
+                    <p className={styles.demoVariant}>Sizes & Icons</p>
+                  </div>
+                  <LocalThemeToggle value={ratingsTheme} onChange={setRatingsTheme} />
+                </div>
+                <div className={styles.ratingsRow}>
+                  <div>
+                    <p className={styles.demoVariant}>Star (interactive)</p>
+                    <Ratings
+                      max={5}
+                      defaultValue={3}
+                      showLabel
+                      size="lg"
+                      theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
+                    />
+                  </div>
+                  <div>
+                    <p className={styles.demoVariant}>Heart (readonly)</p>
+                    <Ratings
+                      max={5}
+                      value={4}
+                      icon="heart"
+                      readonly
+                      showLabel
+                      size="lg"
+                      theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
+                    />
+                  </div>
+                  <div>
+                    <p className={styles.demoVariant}>Circle (small)</p>
+                    <Ratings
+                      max={5}
+                      defaultValue={2}
+                      icon="circle"
+                      showLabel
+                      size="sm"
+                      theme={ratingsTheme === 'inherit' ? undefined : ratingsTheme}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* ProfileCard Demo */}
+              <div id="demo-profilecard" className={styles.demoBlock}>
+                <div className={styles.demoHeader}>
+                  <div>
+                    <h3 className={styles.demoTitle}>ProfileCard</h3>
+                    <p className={styles.demoVariant}>Social Media Integration</p>
+                  </div>
+                  <LocalThemeToggle value={profileTheme} onChange={setProfileTheme} />
+                </div>
+                <div className={styles.profileRow}>
+                  <ProfileCard
+                    // name="Akash Vatsa"
+                    // bio="Entrepreneur @ ICW Technologies. Building Moddular MFE."
+                    // image="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop"
+                    variant="full"
+                    isVerified
+                    // stats={{ followers: '1k+', posts: 24, following: 400 }}
+                    profileUrl="https://github.com/vatsaakash"
+                    theme={profileTheme === 'inherit' ? undefined : profileTheme}
+                  />
+                  <ProfileCard
+                    name="Akash Ranjan"
+                    bio="Full Stack Developer focused on React & Web Performance. Founder of ICW Technologies."
+                    image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop"
+                    variant="split"
+                    isVerified
+                    stats={{ followers: '2k+', posts: 56, following: 500 }}
+                    profileUrl="https://www.linkedin.com/in/vatsaakash/"
+                    theme={profileTheme === 'inherit' ? undefined : profileTheme}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -287,9 +338,9 @@ export default function Home() {
               <div className={styles.stepNumber}>2</div>
               <div className={styles.stepInfo}>
                 <h4>Wrap your App</h4>
-                <p>Add the ThemeProvider for automatic dark/light mode support.</p>
+                <p>Import the global styles, then wrap your app with ThemeProvider.</p>
                 <div className={styles.codeBox}>
-                  <code>{`import { ThemeProvider } from 'moddular-mfe';`}</code>
+                  <code>{`import 'moddular-mfe/src/app/globals.scss';\nimport { ThemeProvider } from 'moddular-mfe';`}</code>
                 </div>
               </div>
             </div>

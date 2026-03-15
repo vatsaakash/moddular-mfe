@@ -24,7 +24,14 @@ touch out/.nojekyll
 
 echo ""
 echo "🚀  Deploying to GitHub Pages..."
-npx -y gh-pages -d out --dotfiles
+if [ -n "$GITHUB_TOKEN" ]; then
+  # Running in GitHub Actions
+  REPO_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/vatsaakash/moddular-mfe.git"
+  npx -y gh-pages -d out --dotfiles --repo "$REPO_URL"
+else
+  # Running locally
+  npx -y gh-pages -d out --dotfiles
+fi
 
 echo ""
 echo "✅  Deployed successfully!"

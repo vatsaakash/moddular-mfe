@@ -226,6 +226,7 @@
   font-weight: $font-weight-medium;
   cursor: pointer;
   @include smooth-transition(background-color, border-color);
+  @include focus-ring;
 
   &:hover {
     background: var(--color-surface-raised);
@@ -289,6 +290,7 @@
   border-radius: $radius-md;
   flex-shrink: 0;
   @include smooth-transition(background-color, color);
+  @include focus-ring;
 
   &:hover {
     background: var(--color-surface-raised);

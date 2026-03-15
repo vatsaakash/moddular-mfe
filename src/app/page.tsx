@@ -152,12 +152,13 @@ export default function Home() {
           <div className={styles.componentsLayout}>
             {/* Mobile Sidebar Toggle */}
             <button 
+              type="button"
               className={styles.mobileSidebarToggle} 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               aria-expanded={isSidebarOpen}
               aria-controls="docs-sidebar"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 {isSidebarOpen ? (
                   <>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -175,11 +176,23 @@ export default function Home() {
             </button>
 
             <aside id="docs-sidebar" className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ''}`}>
-              <nav className={styles.sidebarNav}>
-                <a href="#demo-faq" className={styles.sidebarLink} onClick={() => setIsSidebarOpen(false)}>FAQ</a>
-                <a href="#demo-accordion" className={styles.sidebarLink} onClick={() => setIsSidebarOpen(false)}>Accordion</a>
-                <a href="#demo-ratings" className={styles.sidebarLink} onClick={() => setIsSidebarOpen(false)}>Ratings</a>
-                <a href="#demo-profilecard" className={styles.sidebarLink} onClick={() => setIsSidebarOpen(false)}>ProfileCard</a>
+              <nav 
+                className={styles.sidebarNav} 
+                onClick={(e) => {
+                  if ((e.target as HTMLElement).tagName.toLowerCase() === 'a') {
+                    setIsSidebarOpen(false);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && (e.target as HTMLElement).tagName.toLowerCase() === 'a') {
+                    setIsSidebarOpen(false);
+                  }
+                }}
+              >
+                <a href="#demo-faq" className={styles.sidebarLink}>FAQ</a>
+                <a href="#demo-accordion" className={styles.sidebarLink}>Accordion</a>
+                <a href="#demo-ratings" className={styles.sidebarLink}>Ratings</a>
+                <a href="#demo-profilecard" className={styles.sidebarLink}>ProfileCard</a>
               </nav>
             </aside>
 
@@ -282,10 +295,10 @@ export default function Home() {
                     isVerified
                     // stats={{ followers: '1k+', posts: 24, following: 400 }}
                     profileUrl="https://github.com/vatsaakash"
-                  // theme={profileTheme === 'inherit' ? undefined : profileTheme}
+                    theme={profileTheme === 'inherit' ? undefined : profileTheme}
                   />
                   <ProfileCard
-                    name="Akash Vatsa"
+                    name="Akash Ranjan"
                     bio="Full Stack Developer focused on React & Web Performance. Founder of ICW Technologies."
                     image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop"
                     variant="split"

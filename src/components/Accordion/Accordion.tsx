@@ -152,7 +152,7 @@ export function Accordion({
               aria-labelledby={triggerId}
               className={styles.panel}
             >
-              <div className={styles.content} aria-hidden={!isOpen}>
+              <div className={styles.content} aria-hidden={!isOpen} inert={!isOpen ? true : undefined}>
                 <div>
                   {typeof item.content === 'string' ? (
                     <p>{item.content}</p>

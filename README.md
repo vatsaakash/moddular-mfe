@@ -21,12 +21,14 @@
 
 ## 📦 Components
 
-| Component     | Description                                    | Variants                    |
-| ------------- | ---------------------------------------------- | --------------------------- |
-| **FAQ**       | Collapsible question/answer list               | bordered, flush, card       |
-| **Accordion** | Generic expand/collapse panels                 | bordered, flush, separated  |
-| **Ratings**   | Interactive star/heart/circle rating input      | sm, md, lg + 3 icon types   |
-| **ProfileCard**| Social profile card with stats and platform icons| split, full                 |
+| Component     | Description                                    | Variants                    | Status | Assigned To |
+| ------------- | ---------------------------------------------- | --------------------------- | ------ | ----------- |
+| **FAQ**       | Collapsible question/answer list               | bordered, flush, card       | 🟢 Done | [Akash Ranjan](https://github.com/vatsaakash) |
+| **Accordion** | Generic expand/collapse panels                 | bordered, flush, separated  | 🟢 Done | [Akash Ranjan](https://github.com/vatsaakash) |
+| **Ratings**   | Interactive star/heart/circle rating input      | sm, md, lg + 3 icon types   | 🟢 Done | [Akash Ranjan](https://github.com/vatsaakash) |
+| **ProfileCard**| Social profile card with stats and platform icons| split, full                 | 🟢 Done | [Akash Ranjan](https://github.com/vatsaakash) |
+| **Toast**     | Notification message system                     | -                           | ⏳ Pending | [Fudail Mohammed Zafar](https://github.com/fudailzafar) |
+| **Card Carousel**| Horizontal scrollable card container         | -                           | ⏳ Pending | [Fudail Mohammed Zafar](https://github.com/fudailzafar) |
 
 > More components coming soon! Contributions welcome.
 

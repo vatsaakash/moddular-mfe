@@ -6,6 +6,7 @@ import { FAQ } from '@/components/FAQ';
 import { Accordion } from '@/components/Accordion';
 import { Ratings } from '@/components/Ratings';
 import { ProfileCard } from '@/components/ProfileCard';
+import { Toast } from '@/components/Toast';
 import styles from './page.module.scss';
 
 const faqItems = [
@@ -56,6 +57,31 @@ const accordionItems = [
 ];
 
 type LocalTheme = 'inherit' | 'light' | 'dark';
+type ToastKind = 'success' | 'error' | 'info' | 'warning';
+
+interface ToastInstance {
+  id: number;
+  kind: ToastKind;
+}
+
+const toastCopy: Record<ToastKind, { title: string; message: string }> = {
+  success: {
+    title: 'Changes published',
+    message: 'Your latest content has been saved and deployed.',
+  },
+  error: {
+    title: 'Publish failed',
+    message: 'Something went wrong while publishing. Try again.',
+  },
+  info: {
+    title: 'Background sync',
+    message: 'We are syncing your latest metrics in the background.',
+  },
+  warning: {
+    title: 'Low storage',
+    message: 'You are close to your project storage limit.',
+  },
+};
 
 const LocalThemeToggle = ({ value, onChange }: { value: LocalTheme, onChange: (val: LocalTheme) => void }) => (
   <div className={styles.localThemeToggle}>
@@ -78,6 +104,19 @@ export default function Home() {
   const [accordionTheme, setAccordionTheme] = useState<LocalTheme>('inherit');
   const [ratingsTheme, setRatingsTheme] = useState<LocalTheme>('inherit');
   const [profileTheme, setProfileTheme] = useState<LocalTheme>('inherit');
+  const [toastTheme, setToastTheme] = useState<LocalTheme>('inherit');
+  const [toasts, setToasts] = useState<ToastInstance[]>([]);
+
+  const triggerToast = (kind: ToastKind) => {
+    setToasts((prev) => {
+      const next = [...prev, { id: Date.now() + Math.floor(Math.random() * 1000), kind }];
+      return next.slice(-4);
+    });
+  };
+
+  const dismissToast = (id: number) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  };
 
   return (
     <main className={styles.main}>
@@ -258,6 +297,47 @@ export default function Home() {
                 profileUrl="https://www.linkedin.com/in/vatsaakash/"
                 theme={profileTheme === 'inherit' ? undefined : profileTheme}
               />
+            </div>
+          </div>
+
+          {/* Toast Demo */}
+          <div className={styles.demoBlock}>
+            <div className={styles.demoHeader}>
+              <div>
+                <h3 className={styles.demoTitle}>Toast</h3>
+                <p className={styles.demoVariant}>Interactive Notification Stack</p>
+              </div>
+              <LocalThemeToggle value={toastTheme} onChange={setToastTheme} />
+            </div>
+            <div className={styles.toastActions}>
+              <button type="button" className={styles.toastBtn} onClick={() => triggerToast('success')}>
+                Success Toast
+              </button>
+              <button type="button" className={styles.toastBtn} onClick={() => triggerToast('info')}>
+                Info Toast
+              </button>
+              <button type="button" className={styles.toastBtn} onClick={() => triggerToast('warning')}>
+                Warning Toast
+              </button>
+              <button type="button" className={styles.toastBtn} onClick={() => triggerToast('error')}>
+                Error Toast
+              </button>
+            </div>
+            <div className={styles.toastStack} aria-live="polite" aria-label="Toast notification examples">
+              {toasts.length === 0 && (
+                <p className={styles.toastHint}>Trigger a toast variant to preview appearance and behavior.</p>
+              )}
+              {toasts.map((toast) => (
+                <Toast
+                  key={toast.id}
+                  title={toastCopy[toast.kind].title}
+                  message={toastCopy[toast.kind].message}
+                  variant={toast.kind}
+                  duration={4500}
+                  onClose={() => dismissToast(toast.id)}
+                  theme={toastTheme === 'inherit' ? undefined : toastTheme}
+                />
+              ))}
             </div>
           </div>
         </div>

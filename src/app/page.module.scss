@@ -279,6 +279,45 @@
   }
 }
 
+.toastActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-sm;
+}
+
+.toastBtn {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-radius: $radius-base;
+  padding: $space-sm $space-base;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+
+  @include smooth-transition(border-color, background-color, transform);
+  @include focus-ring;
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-surface-raised);
+    transform: translateY(-1px);
+  }
+}
+
+.toastStack {
+  margin-top: $space-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+}
+
+.toastHint {
+  margin: 0;
+  font-size: $font-size-sm;
+  color: var(--color-text-muted);
+}
+
 /* ── Usage Section ────────────────────────────────────────── */
 .usageSection {
   padding: $space-3xl $space-base;

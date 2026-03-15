@@ -1,0 +1,139 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.toast {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  align-items: flex-start;
+  gap: $space-base;
+  padding: $space-base;
+  border: 1px solid var(--color-border);
+  border-radius: $radius-md;
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 10px 26px var(--shadow-color);
+  font-family: $font-family-base;
+
+  @include smooth-transition(transform, box-shadow, border-color);
+
+  @include respond-below(md) {
+    gap: $space-sm;
+    padding: $space-sm $space-base;
+  }
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0 0 $space-xs;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+}
+
+.message {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
+}
+
+.actions {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: $space-xs;
+}
+
+.actionBtn,
+.closeBtn {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+
+  @include smooth-transition(background-color, color, border-color);
+  @include focus-ring;
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-surface-raised);
+  }
+}
+
+.actionBtn {
+  padding: 6px 10px;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.closeBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: $radius-full;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.info {
+  border-color: var(--color-info);
+
+  .icon {
+    color: var(--color-info);
+    background: var(--color-info-light);
+  }
+}
+
+.success {
+  border-color: var(--color-success);
+
+  .icon {
+    color: var(--color-success);
+    background: var(--color-success-light);
+  }
+}
+
+.warning {
+  border-color: var(--color-warning);
+
+  .icon {
+    color: var(--color-warning);
+    background: var(--color-warning-light);
+  }
+}
+
+.error {
+  border-color: var(--color-error);
+
+  .icon {
+    color: var(--color-error);
+    background: var(--color-error-light);
+  }
+}

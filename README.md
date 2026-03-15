@@ -26,6 +26,7 @@
 | **FAQ**       | Collapsible question/answer list               | bordered, flush, card       |
 | **Accordion** | Generic expand/collapse panels                 | bordered, flush, separated  |
 | **Ratings**   | Interactive star/heart/circle rating input      | sm, md, lg + 3 icon types   |
+| **Toast**     | Dismissible notification with auto-dismiss      | info, success, warning, error |
 
 > More components coming soon! Contributions welcome.
 
@@ -240,7 +241,8 @@ src/
 ├── components/             # MFE components
 │   ├── FAQ/
 │   ├── Accordion/
-│   └── Ratings/
+│   ├── Ratings/
+│   └── Toast/
 ├── providers/
 │   └── ThemeProvider.tsx    # Dark / Light / System theme context
 └── styles/                 # Global SCSS infrastructure

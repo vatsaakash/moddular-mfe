@@ -120,18 +120,29 @@
 // ── Panel ───────────────────────────────────────────────────
 
 .panel {
-  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
+  @include smooth-transition(grid-template-rows);
 }
 
 .content {
-  padding: $space-base $space-lg;
+  overflow: hidden;
+  padding: 0 $space-lg;
   color: var(--color-text-secondary);
   font-size: $font-size-sm;
   line-height: $line-height-relaxed;
 
+  > div {
+    padding-bottom: $space-base;
+  }
+
   @include respond-below(md) {
-    padding: $space-sm $space-base;
+    padding: 0 $space-base;
     font-size: $font-size-xs;
+    
+    > div {
+      padding-bottom: $space-sm;
+    }
   }
 
   p {
@@ -144,4 +155,8 @@
 .open .trigger {
   font-weight: $font-weight-semibold;
   color: var(--color-primary);
+}
+
+.open .panel {
+  grid-template-rows: 1fr;
 }

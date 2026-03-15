@@ -26,6 +26,7 @@
 | **FAQ**       | Collapsible question/answer list               | bordered, flush, card       |
 | **Accordion** | Generic expand/collapse panels                 | bordered, flush, separated  |
 | **Ratings**   | Interactive star/heart/circle rating input      | sm, md, lg + 3 icon types   |
+| **ProfileCard**| Social profile card with stats and platform icons| split, full                 |
 
 > More components coming soon! Contributions welcome.
 

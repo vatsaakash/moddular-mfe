@@ -94,15 +94,13 @@
 
 // ── Smooth Transition ───────────────────────────────────────
 @mixin smooth-transition($properties...) {
-  $duration: $transition-base;
-
   @if list.length($properties) == 0 {
     $properties: all;
   }
 
   transition-property: $properties;
-  transition-duration: $duration;
-  transition-timing-function: ease;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 
   @include reduced-motion {
     transition-duration: 0.01ms;

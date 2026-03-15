@@ -151,14 +151,15 @@ export function Accordion({
               role="region"
               aria-labelledby={triggerId}
               className={styles.panel}
-              hidden={!isOpen}
             >
-              <div className={styles.content}>
-                {typeof item.content === 'string' ? (
-                  <p>{item.content}</p>
-                ) : (
-                  item.content
-                )}
+              <div className={styles.content} aria-hidden={!isOpen}>
+                <div>
+                  {typeof item.content === 'string' ? (
+                    <p>{item.content}</p>
+                  ) : (
+                    item.content
+                  )}
+                </div>
               </div>
             </div>
           </div>
